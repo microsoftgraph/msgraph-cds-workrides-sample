@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="CarPool.Clients.Core.Views.DataSettingsView"    
+    xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core"     
+    xmlns:views="clr-namespace:CarPool.Clients.Core.Views;assembly=CarPool.Clients.Core"
+    BackgroundColor="{StaticResource WhiteColor}"
+    Title="Data Settings">
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Exit"
+            Command="{Binding ExitCommand}" />
+    </TabbedPage.ToolbarItems>
+    <TabbedPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="SearchImageButtonStyle" TargetType="Image">
+                <Setter Property="Aspect" Value="AspectFit" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            
+            <Style x:Key="SearchPhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="RoundedBackgroudColor" Value="{StaticResource BlueColor}" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+                <Setter Property="CornerRadius" Value="48" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="12, 0" />
+            </Style>
+            
+            <Style x:Key="DeleteButtonStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="BackgroundColor" Value="Red" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+            </Style>
+
+            <Style x:Key="AddButtonStyle" TargetType="Button"
+                   BasedOn="{StaticResource DeleteButtonStyle}">
+                <Setter Property="BackgroundColor" Value="Green" />
+            </Style>
+
+        </ResourceDictionary>
+    </TabbedPage.Resources>
+    <ContentPage
+        Title="Queries">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid
+                Grid.Row="0"
+                Margin="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Picker 
+                    Grid.Column="0"
+                    ItemsSource="{Binding Filters}"
+                    SelectedItem="{Binding Filter, Mode=TwoWay}"/>
+                <controls:RoundedBoxView  
+                    Grid.Column="1"
+                    Style="{StaticResource SearchPhotoStyle}"/>
+                <Image
+                    Grid.Column="1"
+                    Style="{StaticResource SearchImageButtonStyle}">
+                    <Image.Source>
+                        <OnPlatform                       
+                            x:TypeArguments="ImageSource"
+                            iOS="menu_find"
+                            Android="menu_find"
+                            WinPhone="Assets/Menu/menu_find.png"/>
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding SearchCommand}"                 
+                            NumberOfTapsRequired="1" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+            <!-- EMPLOYEES -->
+            <ListView 
+                Grid.Row="1"   
+                ItemsSource="{Binding Employees}"
+                IsVisible="{Binding IsEmployee}" 
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                CachingStrategy="RecycleElement"
+                BackgroundColor="Transparent"
+                Margin="12, 0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <views:DataSettingsItemTemplate />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- DRIVERS -->
+            <ListView 
+                Grid.Row="1"    
+                ItemsSource="{Binding Drivers}"    
+                IsVisible="{Binding IsDriver}" 
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                CachingStrategy="RecycleElement"
+                BackgroundColor="Transparent"
+                Margin="12, 0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <views:DataSettingsDriverItemTemplate />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- RIDEDETAILS -->
+            <ListView 
+                Grid.Row="1"   
+                ItemsSource="{Binding RideDetails}"   
+                IsVisible="{Binding IsRideDetails}"  
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                CachingStrategy="RecycleElement"
+                BackgroundColor="Transparent"
+                Margin="12, 0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <views:DataSettingsItemTemplate />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- LOADING -->
+            <ActivityIndicator 
+                Grid.Row="0"    
+                Grid.RowSpan="2"
+                Color="{StaticResource BlackColor}"
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                <ActivityIndicator.WidthRequest>
+                    <OnPlatform 
+                        x:TypeArguments="x:Double" 
+                        iOS="100" 
+                        Android="100"
+                        WinPhone="400" />
+                </ActivityIndicator.WidthRequest>
+            </ActivityIndicator>
+        </Grid>
+    </ContentPage>
+    <ContentPage
+        Title="Operations">
+        <ScrollView>
+            <Grid
+                Margin="12, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout
+                    Grid.Row="0">
+                    <Label 
+                        Text="Reset Data"
+                        FontSize="Large"/>
+                    <StackLayout
+                        Orientation="Horizontal">
+                        <Button
+                            HeightRequest="50"
+                            Text="Reset Emp." 
+                            Command="{Binding ResetEmployeesCommand}"
+                            Style="{StaticResource DeleteButtonStyle}"/>
+                        <Button
+                            Text="Reset Drivers"
+                            Command="{Binding ResetDriversCommand}" 
+                            Style="{StaticResource DeleteButtonStyle}"/>
+                        <Button
+                            Text="Reset RideDetails" 
+                            Command="{Binding ResetRideDetailsCommand}" 
+                            Style="{StaticResource DeleteButtonStyle}"/>
+                    </StackLayout>
+                    <Button 
+                        Text="Reset All" 
+                        Command="{Binding ResetAllCommand}" 
+                        Style="{StaticResource DeleteButtonStyle}"/>
+                    <Button
+                          Text="Reset Calendar (only authenticated user)"
+                          Command="{Binding ResetCalendarCommand}"
+                          Style="{StaticResource DeleteButtonStyle}"/>
+                </StackLayout>
+                <StackLayout
+                    Grid.Row="2">
+                    <Label 
+                        Text="Insert Drivers"
+                        FontSize="Large"/>
+                    <Button 
+                        Text="Insert Drivers" 
+                        Command="{Binding InserDriversCommand}"  
+                        Style="{StaticResource AddButtonStyle}"/>
+                    <Label 
+                        Text="AnneW@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="DavidL@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="GarretV@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="GarthF@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="MollyD@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="PavelB@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="RobY@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="BonnieK@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="AlexD@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="JanetS@fabrikamco.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="AdeleV@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="AlexW@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="BenW@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="ChristieC@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="HenriettaM@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="IsaiahL@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="LidiaH@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                    <Label 
+                        Text="LynneR@MOD627549.onmicrosoft.com"
+                        FontSize="Micro"/>
+                </StackLayout>
+                <!-- LOADING -->
+                <ActivityIndicator 
+                    Grid.Row="0"    
+                    Grid.RowSpan="3"
+                    Color="{StaticResource BlackColor}"
+                    IsRunning="{Binding IsBusy}" 
+                    IsVisible="{Binding IsBusy}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    <ActivityIndicator.WidthRequest>
+                        <OnPlatform 
+                            x:TypeArguments="x:Double" 
+                            iOS="100" 
+                            Android="100"
+                            WinPhone="400" />
+                    </ActivityIndicator.WidthRequest>
+                </ActivityIndicator>
+            </Grid>
+        </ScrollView>
+    </ContentPage>
+</TabbedPage>

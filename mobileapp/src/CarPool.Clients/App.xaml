@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"          
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core" 
+             xmlns:converters="clr-namespace:CarPool.Clients.Core.Converters;assembly=CarPool.Clients.Core"      
+             x:Class="CarPool.Clients.App">
+	<Application.Resources>
+        <ResourceDictionary>
+            
+            <!-- Colors -->
+            <Color x:Key="BlueColor">#3192B3</Color>
+            <Color x:Key="GrayColor">#C8C7CC</Color>
+            <Color x:Key="WhiteColor">#ffffff</Color>
+            <Color x:Key="BlackColor">#000000</Color>
+            <Color x:Key="YellowColor">#FF940F</Color>
+            <Color x:Key="LabelsColor">#60D6B6</Color>
+            <Color x:Key="DividersLinesColor">#007AFF</Color>
+            <Color x:Key="ButtonTextColor">#0056B4</Color>
+            <Color x:Key="LightBackgroundColor">#00358B</Color>
+            <Color x:Key="BackgroundColor">#061F76</Color>
+            <Color x:Key="DarkBackgroundColor">#061767</Color>
+            <Color x:Key="ButtonColor">#F1C40F</Color>
+            
+            <!-- Converters -->
+            <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
+            <converters:RiderRequestConverter x:Key="RiderRequestConverter" />
+            <converters:RidePeriodConverter x:Key="RidePeriodConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:OOFToColorConverter x:Key="OOFToColorConverter" />
+            <converters:InverseSchedulePickupConverter x:Key="InverseSchedulePickupConverter" />
+            <converters:ItemsToBoolConverter x:Key="ItemsToBoolConverter" />
+            <converters:CalendarTimeConverter x:Key="CalendarTimeConverter" />
+            <converters:MenuItemTypeConverter x:Key="MenuItemTypeConverter" />
+            <converters:PeopleIconConverter x:Key="PeopleIconConverter" />
+            <converters:PeopleDistanceConverter x:Key="PeopleDistanceConverter" />
+            <converters:ScheduleDayConverter x:Key="ScheduleDayConverter" />
+            <converters:ScheduleMonthConverter x:Key="ScheduleMonthConverter" />
+            <converters:ScheduleMonthDayConverter x:Key="ScheduleMonthDayConverter" />
+            <converters:SchedulePickupConverter x:Key="SchedulePickupConverter" />
+
+            <OnPlatform x:Key="MediumSize"
+                        x:TypeArguments="x:Double"
+                        iOS="14"
+                        Android="16"
+                        WinPhone="16"/>
+
+            <OnPlatform x:Key="LargeSize"
+                        x:TypeArguments="x:Double"
+                        iOS="16"
+                        Android="18"
+                        WinPhone="18"/>
+
+            <!-- GridSplitter -->
+            <Style TargetType="controls:GridSplitter">
+                <Setter Property="BackgroundColor"
+					Value="#0000358B" />
+                <Setter Property="ControlTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid HeightRequest="20">
+                                <StackLayout WidthRequest="40"
+									Padding="2"
+									VerticalOptions="Center"
+									HorizontalOptions="Center"
+									Spacing="2">
+                                    <BoxView HeightRequest="2"
+										BackgroundColor="#FF868686" />
+                                    <BoxView HeightRequest="2"
+										BackgroundColor="#FF868686" />
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

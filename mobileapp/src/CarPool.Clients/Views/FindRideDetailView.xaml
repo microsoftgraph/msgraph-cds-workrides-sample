@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarPool.Clients.Core.Views.FindRideDetailView"    
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"         
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core"
+             Title="Trip details">
+    <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="RideHeaderTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+            </Style>
+
+            <Style x:Key="RideContentTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+            </Style>
+
+            <Style x:Key="PeopleItemPhotoPanelStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+            </Style>
+
+            <Style x:Key="PeopleItemPhotoStyle" TargetType="controls:RoundedBoxView">
+                
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="PeopleItemPhotoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="EmailButtonStyle" TargetType="Frame">
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BackgroundColor" Value="{StaticResource ButtonColor}" />
+            </Style>
+
+            <Style x:Key="EmailButtonTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ReportTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+            </Style>
+
+            <Style x:Key="ArrowImageStyle" TargetType="Image">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HeightRequest" Value="20" />
+                <Setter Property="WidthRequest" Value="30" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <!-- USER DATA -->
+            <Grid 
+                Grid.Row="0"
+                Margin="48, 48, 0, 12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid    
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Style="{StaticResource PeopleItemPhotoPanelStyle}">
+                    <controls:RoundedBoxView  
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        RoundedBackgroudColor="{Binding User.ProfileColor}"
+                        Style="{StaticResource PeopleItemPhotoStyle}"/>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="{Binding User.DisplayName, Converter={StaticResource PeopleIconConverter}}"
+                        Style="{StaticResource PeopleItemPhotoTextStyle}"/>
+                    <!-- PROFILE PICTURE -->
+                    <ffimageloading:CachedImage 
+                        Source="{Binding User.PhotoStream}"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        DownsampleToViewSize="True"
+                        CacheType="Disk">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation 
+                            BorderSize="2"
+                            BorderHexColor="{StaticResource WhiteColor}" />
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                </Grid>
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    VerticalOptions="Start"
+                    Text="Your carpool with"
+                    TextColor="{StaticResource LabelsColor}"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="{Binding User.DisplayName}"
+                    VerticalOptions="Start"
+                    FontSize="{StaticResource LargeSize}"
+                    TextColor="{StaticResource WhiteColor}"
+                    LineBreakMode="TailTruncation"/>
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    VerticalOptions="End"
+                    Text="{Binding User.Department}"
+                    Style="{StaticResource ReportTextStyle}"/>
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    VerticalOptions="Start"
+                    Text="{Binding User.JobTitle}"
+                    Style="{StaticResource ReportTextStyle}"/>
+            </Grid>
+            
+            <!-- RIDE DATA -->
+            <Grid
+                BackgroundColor="{StaticResource DarkBackgroundColor}"
+                Margin="0, 12, 0, 0"
+                RowSpacing="0"
+                ColumnSpacing="0"
+                Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="48" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+                
+                <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    HorizontalOptions="StartAndExpand"
+                    Orientation="Horizontal">
+                    <Image
+                        Style="{StaticResource ArrowImageStyle}">
+                        <Image.Source>
+                            <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="home"
+                                Android="home"
+                                WinPhone="Assets/home.png"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Home"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource LabelsColor}" />
+                </StackLayout>
+
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    HorizontalOptions="StartAndExpand"
+                    Text="{Binding EstimatedPickup, Converter={StaticResource CalendarTimeConverter}}" 
+                    Style="{StaticResource RideContentTextStyle}" />
+
+                <ffimageloading:CachedImage
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    HorizontalOptions="CenterAndExpand"
+                    Aspect="AspectFill"
+                    Style="{StaticResource ArrowImageStyle}">
+                    <ffimageloading:CachedImage.Source>
+                        <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="arrow_aquamarine"
+                                Android="arrow_aquamarine"
+                                WinPhone="Assets/arrow_aquamarine.png"/>
+                    </ffimageloading:CachedImage.Source>
+                </ffimageloading:CachedImage>
+
+                <StackLayout
+                    Margin="25, 0, 0, 0"
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    Orientation="Horizontal">
+                    <Image
+                        Style="{StaticResource ArrowImageStyle}">
+                        <Image.Source>
+                            <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="work"
+                                Android="work"
+                                WinPhone="Assets/work.png"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Work"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource LabelsColor}" />
+                </StackLayout>
+                
+                <Label 
+                    Margin="25, 0, 0, 0"
+                    Grid.Column="3"
+                    Grid.Row="2"
+                    Text="{Binding EstimatedArrival, Converter={StaticResource CalendarTimeConverter}}" 
+                    Style="{StaticResource RideContentTextStyle}" />
+            </Grid>
+
+            <Grid
+                BackgroundColor="{StaticResource DarkBackgroundColor}"
+                Margin="0, 12, 0, 0"
+                Grid.Row="2"
+                ColumnSpacing="0"
+                RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="48" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+
+                <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    HorizontalOptions="Start"
+                    Orientation="Horizontal">
+                    <Image
+                        Style="{StaticResource ArrowImageStyle}">
+                        <Image.Source>
+                            <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="work"
+                                Android="work"
+                                WinPhone="Assets/work.png"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Work"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource LabelsColor}" />
+                </StackLayout>
+
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    HorizontalOptions="Start"
+                    Text="{Binding EstimatedDeparture, Converter={StaticResource CalendarTimeConverter}}" 
+                    Style="{StaticResource RideContentTextStyle}" />
+
+                <Image
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Aspect="AspectFill"
+                    Style="{StaticResource ArrowImageStyle}">
+                    <Image.Source>
+                        <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="arrow_aquamarine"
+                                Android="arrow_aquamarine"
+                                WinPhone="Assets/arrow_aquamarine.png"/>
+                    </Image.Source>
+                </Image>
+
+                <StackLayout
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    Margin="25, 0, 0, 0"
+                    HorizontalOptions="Start"
+                    Orientation="Horizontal">
+                    <Image
+                        Style="{StaticResource ArrowImageStyle}">
+                        <Image.Source>
+                            <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="home"
+                                Android="home"
+                                WinPhone="Assets/home.png"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Home"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource LabelsColor}" />
+                </StackLayout>
+
+                <Label 
+                    Grid.Column="3"
+                    Grid.Row="2"
+                    Margin="25, 0, 0, 0"
+                    HorizontalOptions="Start"
+                    Text="{Binding EstimatedDropoff, Converter={StaticResource CalendarTimeConverter}}" 
+                    Style="{StaticResource RideContentTextStyle}" />
+            </Grid>
+
+            <!-- EMAIL BUTTON -->
+            <StackLayout 
+                Orientation="Vertical"
+                Margin="48, 0, 48, 0"
+                Grid.Row="4">
+                <Label 
+                    HorizontalOptions="Center"
+                    FontSize="Small"
+                    Text="All ride schedules are estimates"
+                    TextColor="{StaticResource LabelsColor}"/>
+                <controls:ContentViewRoundedCorners
+                    CornerRadius="32"
+                    HeightRequest="65"
+                    Padding="0"
+                    VerticalOptions="EndAndExpand"
+                    Style="{StaticResource EmailButtonStyle}">
+                    <Grid>
+                        <Image 
+                            Aspect="AspectFill">
+                            <Image.Source>
+                                <OnPlatform                       
+                                    x:TypeArguments="ImageSource"
+                                    iOS="btn_background"
+                                    Android="btn_background"
+                                    WinPhone="Assets/btn_background.png"/>
+                            </Image.Source>
+                        </Image>
+                        <StackLayout
+                            Orientation="Horizontal"
+                            HorizontalOptions="Center">
+                            <Image VerticalOptions="Center">
+                                <Image.Source>
+                                    <OnPlatform                       
+                                        x:TypeArguments="ImageSource"
+                                        iOS="mail_icon"
+                                        Android="mail_icon"
+                                        WinPhone="Assets/mail_icon.png"/>
+                                </Image.Source>
+                            </Image>
+                            <Label
+                                Text="Ask for a ride"
+                                Style="{StaticResource EmailButtonTextStyle}"/>
+                        </StackLayout>
+                    </Grid>
+                    <controls:ContentViewRoundedCorners.GestureRecognizers>
+                        <TapGestureRecognizer                      
+                            Command="{Binding SendEmailCommand}" />
+                    </controls:ContentViewRoundedCorners.GestureRecognizers>
+                </controls:ContentViewRoundedCorners>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

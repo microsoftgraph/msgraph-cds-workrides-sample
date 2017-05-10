@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"         
+    x:Class="CarPool.Clients.Core.Views.ScheduleRiderItemTemplate"   
+    x:Name="Template"
+    xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="RiderItemPhotoPanelStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+            </Style>
+
+            <Style x:Key="RiderItemPhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="RoundedBackgroudColor" Value="{StaticResource YellowColor}" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="RiderItemPhotoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ImageButtonStyle" TargetType="Image">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid>
+            <Grid 
+                Margin="24, 12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition Width="48" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid    
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Style="{StaticResource RiderItemPhotoPanelStyle}">
+                    <controls:RoundedBoxView
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource RiderItemPhotoStyle}"/>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="{Binding DisplayName, Converter={StaticResource PeopleIconConverter}}"
+                        Style="{StaticResource RiderItemPhotoTextStyle}"/>
+                    <!-- PROFILE PICTURE -->
+                    <ffimageloading:CachedImage 
+                        Source="{Binding PhotoStream}"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        DownsampleToViewSize="True"
+                        CacheType="Disk">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation 
+                            BorderSize="2"
+                            BorderHexColor="{StaticResource BlueColor}" />
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                </Grid>
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Text="{Binding DisplayName}"
+                    TextColor="{StaticResource BlackColor}"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="Rider"
+                    TextColor="{StaticResource GrayColor}"/>
+                <Image
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"  
+                    Style="{StaticResource ImageButtonStyle}">
+                    <Image.Source>
+                        <OnPlatform                       
+                            x:TypeArguments="ImageSource"
+                            iOS="phone_icon"
+                            Android="phone_icon"
+                            WinPhone="Assets/phone_icon.png"/>
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            NumberOfTapsRequired="1"
+                            Command="{Binding PhoneCallCommand, Source={x:Reference Template}}"
+                            CommandParameter="{Binding .}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image   
+                    Grid.Column="3"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Style="{StaticResource ImageButtonStyle}">
+                    <Image.Source>
+                        <OnPlatform                       
+                            x:TypeArguments="ImageSource"
+                            iOS="mail_icon"
+                            Android="mail_icon"
+                            WinPhone="Assets/mail_icon.png"/>
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            NumberOfTapsRequired="1"
+                            Command="{Binding SendEmailCommand, Source={x:Reference Template}}"
+                            CommandParameter="{Binding .}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

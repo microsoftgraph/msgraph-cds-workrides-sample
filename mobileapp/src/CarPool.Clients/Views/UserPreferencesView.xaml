@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarPool.Clients.Core.Views.UserPreferencesView"          
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"         
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core">
+    <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="UserPreferencesPhotoPanelStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="80" />
+                <Setter Property="WidthRequest" Value="80" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="UserPreferencesPhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="RoundedBackgroudColor" Value="{StaticResource YellowColor}" />
+                <Setter Property="HeightRequest" Value="80" />
+                <Setter Property="WidthRequest" Value="80" />
+                <Setter Property="CornerRadius" Value="48" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="UserPreferencesPhotoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="UserPreferencesSmallContentStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="Margin" Value="24, 6" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="SkipTextColorStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor" Value="{StaticResource ButtonColor}" />
+                <Setter Property="Margin" Value="24, 6" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="UserWelcomeContentStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+                <Setter Property="Margin" Value="24, 6" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid
+            x:Name="UserPreferencesPanel"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid 
+                Grid.Row="0">
+                <Grid.Margin>
+                    <OnPlatform   
+                        x:TypeArguments="Thickness"
+                        Android="0, 10"
+                        iOS="0, 20"
+                        WinPhone="0, 10"/>
+                </Grid.Margin>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="1" />
+                </Grid.RowDefinitions>
+                <ffimageloading:CachedImage 
+                    Grid.Row="0"
+                    VerticalOptions="Center">
+                    <ffimageloading:CachedImage.Source>
+                        <OnPlatform 
+                          x:TypeArguments="ImageSource"
+                          Android="logo"
+                          iOS="logo"
+                          WinPhone="Assets/logo.png"/>
+                    </ffimageloading:CachedImage.Source>
+                </ffimageloading:CachedImage>
+                <BoxView Color="{StaticResource DividersLinesColor}" 
+                         Grid.Row="1" />
+            </Grid>
+            <!-- PROFILE PICTURE -->
+            <Grid 
+                Grid.Row="1"  
+                Margin="0, 20, 0, 0"
+                Style="{StaticResource UserPreferencesPhotoPanelStyle}">
+                <!-- NO IMAGE PROFILE -->
+                <controls:RoundedBoxView
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Style="{StaticResource UserPreferencesPhotoStyle}"/>
+                <Label              
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="{Binding CurrentUser.GivenName, Converter={StaticResource PeopleIconConverter}}"
+                    Style="{StaticResource UserPreferencesPhotoTextStyle}"/>
+                <!-- PROFILE PICTURE -->
+                <ffimageloading:CachedImage 
+                    Source="{Binding CurrentUser.PhotoStream}"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    DownsampleToViewSize="True"
+                    CacheType="Disk">
+                    <ffimageloading:CachedImage.Transformations>
+                        <fftransformations:CircleTransformation 
+                            BorderSize="2"
+                            BorderHexColor="{StaticResource BlueColor}" />
+                    </ffimageloading:CachedImage.Transformations>
+                </ffimageloading:CachedImage>
+            </Grid>
+            <!-- TITLE -->
+            <Label
+                Grid.Row="2"
+                Text="{Binding CurrentUser.GivenName, StringFormat='Welcome to WorkRides, {0:N}!'}"
+                Style="{StaticResource UserWelcomeContentStyle}"/>
+            <Grid
+                Grid.Row="4"
+                Margin="0, 100, 0, 0">
+                <Label
+                    Grid.Column="0"
+                    Text="How do you want to get started?"
+                    Style="{StaticResource UserPreferencesSmallContentStyle}"/>
+            </Grid>
+            <StackLayout
+                Grid.Row="5"
+                VerticalOptions="StartAndExpand"
+                Margin="0, 12">
+                <!-- RIDE -->
+                <controls:ContentViewRoundedCorners
+                    HeightRequest="65"
+                    CornerRadius="32"
+                    Padding="0"
+                    BackgroundColor="{StaticResource ButtonColor}"
+                    Margin="72, 0, 72, 0">
+                    <Grid>
+                        <Image 
+                            Aspect="AspectFill">
+                            <Image.Source>
+                                <OnPlatform                       
+                                    x:TypeArguments="ImageSource"
+                                    iOS="btn_background"
+                                    Android="btn_background"
+                                    WinPhone="Assets/btn_background.png"/>
+                            </Image.Source>
+                        </Image>
+                        <Label 
+                            Text="Find a ride"
+                            TextColor="{StaticResource ButtonTextColor}"
+                            FontSize="{StaticResource LargeSize}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"/>
+                    </Grid>
+                    <controls:ContentViewRoundedCorners.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding RideCommand}"                 
+                            NumberOfTapsRequired="1" />
+                    </controls:ContentViewRoundedCorners.GestureRecognizers>
+                </controls:ContentViewRoundedCorners>
+                <!-- DRIVE -->
+                <controls:ContentViewRoundedCorners 
+                    HeightRequest="65"
+                    CornerRadius="32"
+                    Padding="1"
+                    BackgroundColor="{StaticResource ButtonColor}"
+                    Margin="72, 0, 72, 0">
+                    <controls:ContentViewRoundedCorners 
+                        BackgroundColor="{StaticResource BackgroundColor}"
+                        CornerRadius="32">
+                        <Label     
+                            Text="Drive a carpool"
+                            TextColor="{StaticResource ButtonColor}" 
+                            FontSize="{StaticResource LargeSize}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"/>
+                        <controls:ContentViewRoundedCorners.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding DriveCommand}"                 
+                                NumberOfTapsRequired="1" />
+                        </controls:ContentViewRoundedCorners.GestureRecognizers>
+                    </controls:ContentViewRoundedCorners>
+                </controls:ContentViewRoundedCorners>
+                <Label
+                    Grid.Column="0"
+                    Text="Skip for now"
+                    Style="{StaticResource SkipTextColorStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding SkipCommand}"                 
+                            NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <!-- LOADING -->
+            <ActivityIndicator   
+                Grid.Row="0"
+                Grid.RowSpan="7"
+                Color="{StaticResource WhiteColor}"
+                IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                <ActivityIndicator.WidthRequest>
+                    <OnPlatform 
+                        x:TypeArguments="x:Double" 
+                        iOS="100" 
+                        Android="100"
+                        WinPhone="400" />
+                </ActivityIndicator.WidthRequest>
+            </ActivityIndicator>
+        </Grid>
+    </ScrollView>
+</ContentPage>

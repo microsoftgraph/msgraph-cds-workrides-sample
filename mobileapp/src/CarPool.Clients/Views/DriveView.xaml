@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:animations="clr-namespace:Carpool.Clients.Animations;assembly=CarPool.Clients.Core"
+             xmlns:map="clr-namespace:CarPool.Clients.Core.Maps.Controls;assembly=CarPool.Clients.Core"
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core" 
+             xmlns:behaviors="clr-namespace:CarPool.Clients.Core.Behaviors;assembly=CarPool.Clients.Core"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:triggers="clr-namespace:Carpool.Clients.Triggers;assembly=CarPool.Clients.Core"
+             xmlns:views="clr-namespace:CarPool.Clients.Core.Views;assembly=CarPool.Clients.Core"      
+             x:Class="CarPool.Clients.Core.Views.DriveView"
+             Title="Drive">
+    <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="NoDriverStyle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="Margin" Value="24, 0" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+            </Style>
+
+            <Style x:Key="EditSettingsStyle"  TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ButtonColor}" />
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="Margin" Value="24, 0, 24, 0" />
+            </Style>
+
+            <animations:FadeInAnimation
+                x:Key="RidersFadeInAnimation"
+                Target="{x:Reference Riders}"
+                Direction="Up"
+                Duration="500"/>
+
+            <animations:FadeInAnimation
+                x:Key="RiderRequestsFadeInAnimation"
+                Target="{x:Reference RiderRequests}"
+                Direction="Up"
+                Duration="500"/>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!-- CUSTOM MAP -->
+        <map:CustomMap 
+            Grid.Row="0"
+            Riders="{Binding RidersList}"
+            Pushpins="{Binding PushpinsList}"
+            MapType="Street" />
+        <!-- SPLITTER -->
+        <controls:GridSplitter 
+            Grid.Row="1"
+            MinHeight="150"
+			      VerticalOptions="Fill"/>
+        <Grid
+            IsVisible="{Binding IsDriverEnabled, Converter={StaticResource InverseBoolConverter}}"
+            Grid.Row="2">
+          
+        </Grid>
+        <Grid 
+            Grid.Row="2"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!-- MODE SELECTION -->
+            <Grid 
+                Grid.Row="0"
+                Margin="48, 12, 48, 0"
+                ColumnSpacing="0"
+                HorizontalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- MODE SELECTION -->
+                <controls:ToggleButton 
+                    Grid.Column="0"
+                    Text="My carpool"  
+                    Animate="False"
+                    CheckedTextColor="{StaticResource ButtonTextColor}"
+                    TextColor="{StaticResource ButtonColor}"
+                    FontSize="14"
+                    Checked="{Binding RiderChecked}"
+                    Command="{Binding SelectorCommand}"
+                    CommandParameter="Riders"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="End">
+                    <controls:ToggleButton.CheckedImage>
+                        <OnPlatform                         
+                            x:TypeArguments="ImageSource"
+                            Android="toggle_long_full_left"
+                            iOS="toggle_long_full_left"
+                            WinPhone="Assets/toggle_long_full_left.png"/>
+                    </controls:ToggleButton.CheckedImage>
+                    <controls:ToggleButton.UnCheckedImage>
+                        <OnPlatform 
+                            x:TypeArguments="ImageSource"
+                            Android="toggle_long_empty_left"
+                            iOS="toggle_long_empty_left"
+                            WinPhone="Assets/toggle_long_empty_left.png"/>
+                    </controls:ToggleButton.UnCheckedImage>
+                    <controls:ToggleButton.Triggers>
+                        <EventTrigger Event="OnToggleSelected">
+                            <triggers:BeginAnimation Animation="{StaticResource RidersFadeInAnimation}" />
+                        </EventTrigger>
+                    </controls:ToggleButton.Triggers>
+                </controls:ToggleButton>
+                <controls:ToggleButton   
+                    Grid.Column="1"                     
+                    Text="{Binding MyRiderRequests, Converter={StaticResource RiderRequestConverter}"
+                    CheckedTextColor="{StaticResource ButtonTextColor}"
+                    TextColor="{StaticResource ButtonColor}"
+                    Animate="False"
+                    FontSize="14"
+                    Checked="{Binding RiderRequestsChecked}"
+                    Command="{Binding SelectorCommand}"
+                    CommandParameter="RiderRequests"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="Start">
+                    <controls:ToggleButton.CheckedImage>
+                        <OnPlatform 
+                          x:TypeArguments="ImageSource"
+                          Android="toggle_long_full_right"
+                          iOS="toggle_long_full_right"
+                          WinPhone="Assets/toggle_long_full_right.png"/>
+                    </controls:ToggleButton.CheckedImage>
+                    <controls:ToggleButton.UnCheckedImage>
+                        <OnPlatform 
+                          x:TypeArguments="ImageSource"
+                          Android="toggle_long_empty_right"
+                          iOS="toggle_long_empty_right"
+                          WinPhone="Assets/toggle_long_empty_right.png"/>
+                    </controls:ToggleButton.UnCheckedImage>
+                    <controls:ToggleButton.Triggers>
+                        <EventTrigger Event="OnToggleSelected">
+                            <triggers:BeginAnimation Animation="{StaticResource RiderRequestsFadeInAnimation}" />
+                        </EventTrigger>
+                    </controls:ToggleButton.Triggers>
+                </controls:ToggleButton>
+            </Grid>
+            <!-- RIDERS -->
+            <Grid 
+                IsVisible="{Binding IsDriverEnabled, Converter={StaticResource InverseBoolConverter}}"
+                Grid.Row="1">
+                <StackLayout 
+                    Orientation="Vertical"
+                    IsVisible="{Binding Events.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter='Inverse'}"
+                    Grid.Row="0"
+                    Grid.Column="0">
+                    <Label 
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="You're not registered as a driver in the WorkRides directory yet."
+                        Style="{StaticResource NoDriverStyle}"/>
+                    <StackLayout 
+                        Orientation="Horizontal"
+                        HorizontalOptions="Center">
+                        <Label 
+                            Text="Sign up to drive a carpool"
+                            Style="{StaticResource EditSettingsStyle}"/>
+                        <ffimageloading:CachedImage
+                            HorizontalOptions="Start"
+                            WidthRequest="40">
+                            <ffimageloading:CachedImage.Source>
+                                <OnPlatform 
+                                  x:TypeArguments="ImageSource"
+                                  Android="arrow_yellow"
+                                  iOS="arrow_yellow"
+                                  WinPhone="Assets/arrow_yellow.png"/>
+                            </ffimageloading:CachedImage.Source>
+                        </ffimageloading:CachedImage>
+                    </StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer                     
+                            Command="{Binding EditSettingsCommand}" />
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </Grid>
+            <Grid 
+                IsVisible="{Binding IsDriverEnabled}"
+                Grid.Row="1">
+                <Grid 
+                    x:Name="Riders"
+                    Grid.Row="0"
+                    Margin="12, 0, 12, 0"
+                    IsVisible="{Binding RiderChecked}">
+                    <StackLayout
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}">
+                        <Label 
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="36, 0, 36, 0"
+                            IsVisible="{Binding MyRiders.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter='Inverse'}"
+                            VerticalOptions="CenterAndExpand"
+                            HorizontalOptions="CenterAndExpand"
+                            TextColor="{StaticResource LabelsColor}"
+                            HorizontalTextAlignment="Center"
+                            FontSize="{StaticResource MediumSize}"
+                            Text="You don't have any riders yet. We'll let you know if someone requests a ride with you." />
+                    </StackLayout>
+                    <ListView 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        IsPullToRefreshEnabled="True"
+                        RefreshCommand="{Binding RefreshCommand}"
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                        HasUnevenRows="True"
+                        ItemsSource="{Binding MyRiders}"
+                        SeparatorVisibility="None"
+                        CachingStrategy="RecycleElement"  
+                        BackgroundColor="Transparent">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <views:PeopleItemTemplate />
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.FooterTemplate>
+                            <DataTemplate>
+                                <views:PeopleFooterTemplate />
+                            </DataTemplate>
+                        </ListView.FooterTemplate>
+                    </ListView>
+                    <!-- LOADING -->
+                    <ActivityIndicator   
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Color="{StaticResource WhiteColor}"
+                        IsVisible="{Binding IsBusy}" 
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center">
+                        <ActivityIndicator.WidthRequest>
+                            <OnPlatform 
+                                x:TypeArguments="x:Double" 
+                                iOS="100" 
+                                Android="100"
+                                WinPhone="400" />
+                        </ActivityIndicator.WidthRequest>
+                        <ActivityIndicator.IsRunning>
+                            <OnPlatform 
+                                x:TypeArguments="x:Boolean" 
+                                iOS="False" 
+                                Android="False"
+                                WinPhone="True" />
+                        </ActivityIndicator.IsRunning>
+                    </ActivityIndicator>
+                </Grid>
+                <!-- RIDER REQUESTS -->
+                <Grid 
+                    x:Name="RiderRequests"
+                    Grid.Row="0"
+                    Margin="12, 12, 12, 0"
+                    IsVisible="{Binding RiderRequestsChecked}">
+                    <StackLayout
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}">
+                        <Label 
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="36, 0, 36, 0"
+                            IsVisible="{Binding MyRiderRequests.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter='Inverse'}"
+                            VerticalOptions="CenterAndExpand"
+                            HorizontalOptions="CenterAndExpand"
+                            TextColor="{StaticResource LabelsColor}"
+                            FontSize="{StaticResource MediumSize}"
+                            Text="You don't have any rider request yet. We'll let you know if someone requests a ride with you." />
+                    </StackLayout>
+                    <ListView 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        IsPullToRefreshEnabled="True"
+                        behaviors:ItemTappedCommandListView.ItemTappedCommand="{Binding InspectRiderRequestCommand}"
+                        RefreshCommand="{Binding RefreshCommand}"
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                        HasUnevenRows="True"
+                        ItemsSource="{Binding MyRiderRequests}"
+                        SeparatorVisibility="None"
+                        CachingStrategy="RecycleElement"
+                        BackgroundColor="Transparent">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <views:PeopleItemTemplate />
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.FooterTemplate>
+                            <DataTemplate>
+                                <views:PeopleFooterTemplate />
+                            </DataTemplate>
+                        </ListView.FooterTemplate>
+                    </ListView>
+                    <!-- LOADING -->
+                    <ActivityIndicator   
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Color="{StaticResource WhiteColor}"
+                        IsVisible="{Binding IsBusy}" 
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center">
+                        <ActivityIndicator.WidthRequest>
+                            <OnPlatform 
+                                x:TypeArguments="x:Double" 
+                                iOS="100" 
+                                Android="100"
+                                WinPhone="400" />
+                        </ActivityIndicator.WidthRequest>
+                        <ActivityIndicator.IsRunning>
+                            <OnPlatform 
+                                x:TypeArguments="x:Boolean" 
+                                iOS="False" 
+                                Android="False"
+                                WinPhone="True" />
+                        </ActivityIndicator.IsRunning>
+                    </ActivityIndicator>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

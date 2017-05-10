@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="CarPool.Clients.Core.Views.DataSettingsDriverItemTemplate">
+  <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Label 
+                Grid.Row="0"
+                Text="{Binding Name}"
+                FontSize="Medium"/>
+            <Label 
+                Grid.Row="1"
+                Text="{Binding DisplayName}"/>
+            <Label 
+                Grid.Row="2"
+                Text="{Binding Arrival}"
+                FontSize="Small"/>
+            <Label 
+                Grid.Row="3"
+                Text="{Binding Departure}"
+                FontSize="Small"/>
+            <Grid 
+                Grid.Row="4"
+                BackgroundColor="{StaticResource GrayColor}"
+                HeightRequest="1"
+                Margin="24, 0"/>
+        </Grid>
+  </ContentView.Content>
+</ContentView>

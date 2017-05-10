@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="CarPool.Clients.Core.Views.ScheduleItemTemplate"
+    x:Name="Template">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="ScheduleInfoLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ScheduleContentLabelStyle" TargetType="Label">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <StackLayout Orientation="Vertical">
+            <Grid 
+                HeightRequest="36"
+                Padding="1"
+                Margin="60, 0, 23, 5">
+                <Grid BackgroundColor="{StaticResource DarkBackgroundColor}">
+                    <Grid
+                        IsVisible="{Binding To.IsCancelled}"
+                        Padding="5">
+                        <Label 
+                            Grid.Column="0"
+                            Text="Cancelled"
+                            Margin="30, 0, 0, 0"
+                            Style="{StaticResource ScheduleInfoLabelStyle}"/>
+                    </Grid>
+                    <Grid
+                        IsVisible="{Binding To.BodyPreview, Converter={StaticResource StringToBoolConverter}}">
+                        <Grid
+                            IsVisible="{Binding To.IsCancelled, Converter={StaticResource InverseBoolConverter}}"
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image 
+                                Grid.Column="0"
+                                IsVisible="{Binding To.Body, Converter={StaticResource SchedulePickupConverter}}">
+                                <Image.Source>
+                                    <OnPlatform                       
+                                        x:TypeArguments="ImageSource"
+                                        iOS="arrow_aquamarine"
+                                        Android="arrow_aquamarine"
+                                        WinPhone="Assets/arrow_aquamarine.png"/>
+                                </Image.Source>
+                            </Image>
+                            <Image 
+                                Grid.Column="0"
+                                IsVisible="{Binding To.Body, Converter={StaticResource InverseSchedulePickupConverter}}">
+                                <Image.Source>
+                                    <OnPlatform                       
+                                        x:TypeArguments="ImageSource"
+                                        iOS="left_arrow_aquamarine"
+                                        Android="left_arrow_aquamarine"
+                                        WinPhone="Assets/left_arrow_aquamarine.png"/>
+                                </Image.Source>
+                            </Image>
+                            <Label 
+                                Grid.Column="1"
+                                Text="Pickup"
+                                Style="{StaticResource ScheduleInfoLabelStyle}"/>
+                            <Label 
+                                Grid.Column="2"
+                                Text="{Binding To.StartDate, Converter={StaticResource CalendarTimeConverter}}"    
+                                Style="{StaticResource ScheduleContentLabelStyle}"/>
+                            <Label 
+                                Grid.Column="3"
+                                Text="-"
+                                Style="{StaticResource ScheduleContentLabelStyle}"/>
+                            <Label 
+                                Grid.Column="4"
+                                Text="Arrival"  
+                                Style="{StaticResource ScheduleInfoLabelStyle}"/>
+                            <Label 
+                                Grid.Column="5"
+                                Text="{Binding To.EndDate, Converter={StaticResource CalendarTimeConverter}}"     
+                                Style="{StaticResource ScheduleContentLabelStyle}"/>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer    
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding TapCommand, Source={x:Reference Template}}"
+                                    CommandParameter="{Binding To}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid 
+                HeightRequest="36"
+                Padding="1"
+                Margin="60, 0, 23, 12">
+                <Grid BackgroundColor="{StaticResource DarkBackgroundColor}">
+                    <Grid
+                        IsVisible="{Binding From.IsCancelled}"
+                        BackgroundColor="{StaticResource BackgroundColor}"
+                        Padding="5">
+                        <Label 
+                            Grid.Column="0"
+                            Text="Cancelled"
+                            Margin="30, 0, 0, 0"
+                            Style="{StaticResource ScheduleInfoLabelStyle}"/>
+                    </Grid>
+                    <Grid IsVisible="{Binding From.BodyPreview, Converter={StaticResource StringToBoolConverter}}">
+                        <Grid
+                            IsVisible="{Binding From.IsCancelled, Converter={StaticResource InverseBoolConverter}}"
+                            BackgroundColor="{StaticResource BackgroundColor}"
+                            Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image 
+                                Grid.Column="0"
+                                IsVisible="{Binding From.Body, Converter={StaticResource SchedulePickupConverter}}">
+                                <Image.Source>
+                                    <OnPlatform                       
+                                        x:TypeArguments="ImageSource"
+                                        iOS="arrow_aquamarine"
+                                        Android="arrow_aquamarine"
+                                        WinPhone="Assets/arrow_aquamarine.png"/>
+                                </Image.Source>
+                            </Image>
+                            <Image 
+                                Grid.Column="0"
+                                IsVisible="{Binding From.Body, Converter={StaticResource InverseSchedulePickupConverter}}">
+                                <Image.Source>
+                                    <OnPlatform                       
+                                        x:TypeArguments="ImageSource"
+                                        iOS="left_arrow_aquamarine"
+                                        Android="left_arrow_aquamarine"
+                                        WinPhone="Assets/left_arrow_aquamarine.png"/>
+                                </Image.Source>
+                            </Image>
+                            <Label 
+                                Grid.Column="1"
+                                Text="Pickup"
+                                Style="{StaticResource ScheduleInfoLabelStyle}"/>
+                            <Label 
+                                Grid.Column="2"
+                                Text="{Binding From.StartDate, Converter={StaticResource CalendarTimeConverter}}"    
+                                Style="{StaticResource ScheduleContentLabelStyle}"/>
+                            <Label 
+                                Grid.Column="3"
+                                Text="-"
+                                Style="{StaticResource ScheduleContentLabelStyle}"/>
+                            <Label 
+                                Grid.Column="4"
+                                Text="Arrival"  
+                                Style="{StaticResource ScheduleInfoLabelStyle}"/>
+                            <Label 
+                                Grid.Column="5"
+                                Text="{Binding From.EndDate, Converter={StaticResource CalendarTimeConverter}}"     
+                                Style="{StaticResource ScheduleContentLabelStyle}"/>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer    
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding TapCommand, Source={x:Reference Template}}"
+                                    CommandParameter="{Binding From}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="CarPool.Clients.Core.Views.ScheduleGroupItemTemplate">
+    <ContentView.Content>
+        <Grid        
+            Margin="12, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label 
+                Grid.Column="0"
+                Text="{Binding Key, Converter={StaticResource ScheduleMonthConverter}}"                          
+                TextColor="{StaticResource LabelsColor}"
+                FontSize="{StaticResource LargeSize}" />
+            <Label 
+                Grid.Column="1"
+                Text="{Binding Key, Converter={StaticResource ScheduleDayConverter}}"                          
+                TextColor="{StaticResource LabelsColor}"
+                FontSize="{StaticResource LargeSize}" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

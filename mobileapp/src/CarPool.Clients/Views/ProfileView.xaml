@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"      
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core" 
+             xmlns:behaviors="clr-namespace:CarPool.Clients.Core.Behaviors;assembly=CarPool.Clients.Core"
+             xmlns:triggers="clr-namespace:Carpool.Clients.Triggers;assembly=CarPool.Clients.Core"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"         
+             xmlns:animations="clr-namespace:Carpool.Clients.Animations;assembly=CarPool.Clients.Core"
+             xmlns:effects="clr-namespace:CarPool.Clients.Core.Effects;assembly=CarPool.Clients.Core"
+             x:Class="CarPool.Clients.Core.Views.ProfileView"
+             Title="Settings">
+    <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="UserPreferencesPhotoPanelStyle" TargetType="Grid">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="UserPreferencesPhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="RoundedBackgroudColor" Value="{StaticResource YellowColor}" />
+                <Setter Property="HeightRequest" Value="60" />
+                <Setter Property="WidthRequest" Value="60" />
+                <Setter Property="CornerRadius" Value="48" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="UserPreferencesPhotoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ProfileHeaderStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+                <Setter Property="Margin" Value="12, 0" />
+            </Style>
+
+            <Style x:Key="ProfileContentStyle" TargetType="Editor">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="Margin" Value="12, 0" />
+                <Setter Property="HeightRequest" Value="120" />
+            </Style>
+
+            <Style x:Key="UserTimePickerStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="Margin" Value="12, 0" />
+            </Style>
+            
+            <Style x:Key="DrivePanelStyle" TargetType="StackLayout">
+                <Setter Property="Orientation" Value="Horizontal" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="Margin" Value="0, 12, 0, 12" />
+            </Style>
+
+            <Style x:Key="ProfileDriveTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="Margin" Value="12, 0" />
+            </Style>
+
+            <Style x:Key="ProfileDriveMailTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="Margin" Value="12, 0" />
+            </Style>
+
+            <Style x:Key="PassengersSelectorStyle" TargetType="controls:PassengersSelector">
+                <Setter Property="WidthRequest" Value="100" />
+                <Setter Property="HeightRequest" Value="30" />
+                <Setter Property="Margin" Value="48, 12, 12, 0" />
+            </Style>
+
+            <animations:FadeInAnimation
+                x:Key="ProfileAnimation"
+                Target="{x:Reference Profile}"
+                Direction="Up"
+                Duration="1000"/>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Logout"
+            Command="{Binding LogoutCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform 
+                    x:TypeArguments="FileImageSource"
+                    WinPhone="Assets/Menu/menuitem_logout.png" />
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Triggers>
+        <EventTrigger Event="OnAppearing">
+            <triggers:BeginAnimation
+                Animation="{StaticResource ProfileAnimation}" />
+        </EventTrigger>
+    </ContentPage.Triggers>
+    <ScrollView>
+        <Grid x:Name="Profile">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- PROFILE INFO -->
+            <Grid
+                BackgroundColor="{StaticResource DarkBackgroundColor}"
+                Grid.Row="0"
+                Margin="0, 6"
+                Padding="14, 0, 10, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"  
+                    VerticalOptions="Center"
+                    Style="{StaticResource UserPreferencesPhotoPanelStyle}">
+                    <!-- NO IMAGE PROFILE -->
+                    <controls:RoundedBoxView
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource UserPreferencesPhotoStyle}"/>
+                    <Label              
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="{Binding CurrentUser.GivenName, Converter={StaticResource PeopleIconConverter}}"
+                        Style="{StaticResource UserPreferencesPhotoTextStyle}"/>
+                    <!-- PROFILE PICTURE -->
+                    <ffimageloading:CachedImage 
+                        Source="{Binding CurrentUser.PhotoStream}"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HeightRequest="60" 
+                        WidthRequest="60" 
+                        DownsampleToViewSize="True"
+                        CacheType="Disk">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation 
+                                BorderSize="2"
+                                BorderHexColor="{StaticResource WhiteColor}" />
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                </Grid>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    VerticalOptions="End"
+                    HorizontalOptions="Start"
+                    LineBreakMode="TailTruncation"
+                    Margin="10, 0"
+                    Text="{Binding CurrentUser.DisplayName}"
+                    Style="{StaticResource ProfileDriveTextStyle}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="10, 0"
+                    HorizontalOptions="Start"
+                    LineBreakMode="TailTruncation"
+                    Text="{Binding CurrentUser.Mail}"
+                    Style="{StaticResource ProfileDriveMailTextStyle}"/>
+            </Grid>
+
+            <!-- AT WORK BY -->
+            <Grid
+                BackgroundColor="{StaticResource DarkBackgroundColor}"
+                Grid.Row="1"
+                Margin="0, 6"
+                Padding="12, 12, 12, 12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="At work by"
+                    Style="{StaticResource ProfileHeaderStyle}"/>
+                <controls:LabelTimePicker 
+                    Grid.Row="1" 
+                    Grid.Column="0"
+                    TextStyle="{StaticResource UserTimePickerStyle}"
+                    Time="{Binding ArrivalTimeSpan, Mode=TwoWay}"
+                    TextColor="{StaticResource WhiteColor}" />
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Leave work by"  
+                    Style="{StaticResource ProfileHeaderStyle}"/>
+                <controls:LabelTimePicker 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    TextStyle="{StaticResource UserTimePickerStyle}"
+                    Time="{Binding DepartureTimeSpan, Mode=TwoWay}"
+                    TextColor="{StaticResource WhiteColor}" />
+            </Grid>
+            
+            <!-- PICKUP -->
+            <Grid
+                BackgroundColor="{StaticResource DarkBackgroundColor}"
+                Grid.Row="2"
+                Margin="0, 6"
+                RowSpacing="0"
+                Padding="12, 12, 12, 12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Start location"  
+                    Style="{StaticResource ProfileHeaderStyle}"/>
+                <Editor
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    AnchorX="0"
+                    AnchorY="0"
+                    TextColor="{StaticResource WhiteColor}"
+                    behaviors:EditorCompletedCommandBehavior.CompletedCommand="{Binding UpdateHomeAddressCommand}"
+                    Text="{Binding HomeAddress, Mode=TwoWay}"
+                    Style="{StaticResource ProfileContentStyle}"/>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Work address"
+                    Style="{StaticResource ProfileHeaderStyle}"/>
+                <Editor
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource WhiteColor}"
+                    behaviors:EditorCompletedCommandBehavior.CompletedCommand="{Binding UpdateWorkAddressCommand}"
+                    Text="{Binding WorkAddress, Mode=TwoWay}"
+                    Style="{StaticResource ProfileContentStyle}"/>
+
+            </Grid>
+
+            <!-- PASSENGERS -->
+            <Grid
+                BackgroundColor="{StaticResource DarkBackgroundColor}"
+                Grid.Row="3"
+                Margin="0, 6"
+                Padding="12, 12, 12, 12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="I want to drive"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource ProfileDriveTextStyle}"/>
+                <Switch 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    Margin="0,0,24,0"
+                    IsToggled="{Binding IsDriver, Mode=TwoWay}" />
+
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    HorizontalOptions="Start"
+                    Text="Number of seats for riders"  
+                    Style="{StaticResource ProfileHeaderStyle}" />
+                <controls:PassengersSelector
+                    Grid.Column="1"
+                    Grid.Row="1" 
+                    Passengers="{Binding Passengers, Mode=TwoWay}"
+                    Style="{StaticResource PassengersSelectorStyle}"/>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentPage>

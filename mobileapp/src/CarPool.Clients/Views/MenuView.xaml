@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarPool.Clients.Core.Views.MenuView"     
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"         
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core"
+             xmlns:views="clr-namespace:CarPool.Clients.Core.Views;assembly=CarPool.Clients.Core"             
+             xmlns:behaviors="clr-namespace:CarPool.Clients.Core.Behaviors;assembly=CarPool.Clients.Core"   
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             Title=" ">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="ProfilePhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="RoundedBackgroudColor" Value="{StaticResource YellowColor}" />
+                <Setter Property="HeightRequest" Value="60" />
+                <Setter Property="WidthRequest" Value="60" />
+                <Setter Property="CornerRadius" Value="48" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="ProfileTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="LogoutItemTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="Margin" Value="12" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <!-- PROFILE -->
+        <Grid
+            Padding="36, 0, 12, 0"
+            Grid.Row="0"
+            BackgroundColor="{StaticResource BackgroundColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <controls:RoundedBoxView          
+                Grid.Column="0"
+                Style="{StaticResource ProfilePhotoStyle}"/>
+            <Label 
+                Grid.Column="0"
+                Text="{Binding CurrentUser.DisplayName, Converter={StaticResource PeopleIconConverter}}" 
+                HorizontalOptions="Center"
+                Style="{StaticResource ProfileTextStyle}" />
+            <!-- PROFILE PICTURE -->
+            <ffimageloading:CachedImage 
+                Source="{Binding CurrentUser.PhotoStream}"
+                Grid.Column="0"
+                WidthRequest="60"
+                HeightRequest="60"
+                DownsampleToViewSize="True"
+                CacheType="Disk">
+                <ffimageloading:CachedImage.Transformations>
+                    <fftransformations:CircleTransformation  
+                        BorderSize="2"
+                        BorderHexColor="{StaticResource WhiteColor}" />
+                </ffimageloading:CachedImage.Transformations>
+            </ffimageloading:CachedImage>
+            
+            <Label 
+                Grid.Column="1"
+                Text="{Binding CurrentUser.DisplayName}" 
+                Style="{StaticResource ProfileTextStyle}"/>
+        </Grid>
+        <!-- MENU -->
+        <ListView    
+            Grid.Row="1"
+            ItemsSource="{Binding MenuItems, Mode=OneWay}"      
+            behaviors:ItemTappedCommandListView.ItemTappedCommand="{Binding ItemSelectedCommand}"
+            SeparatorVisibility="None"
+            CachingStrategy="RecycleElement"
+            BackgroundColor="Transparent">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <views:MenuItemTemplate />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!-- SEPARATOR -->
+        <Grid           
+            Grid.Row="2"
+            BackgroundColor="{StaticResource DividersLinesColor}"
+            Opacity="0.2"
+            HeightRequest="1" />
+        <!-- LOG OUT -->
+        <StackLayout
+            Orientation="Horizontal"
+            Grid.Row="3">
+            <StackLayout.Margin>
+                <OnPlatform  
+                    x:TypeArguments="Thickness"
+                    Android="24, 0, 0, 0"
+                    iOS="36, 0, 0, 0"
+                    WinPhone="12, 0, 0, 12"/>
+            </StackLayout.Margin>
+            <Image 
+                Aspect="AspectFit"
+                WidthRequest="48"
+                HeightRequest="48"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <Image.Source>
+                    <OnPlatform                       
+                        x:TypeArguments="ImageSource"
+                        iOS="exit_icon"
+                        Android="exit_icon"
+                        WinPhone="Assets/exit_icon.png"/>
+                </Image.Source>
+            </Image>
+            <Label 
+                Text="Logout"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Style="{StaticResource LogoutItemTextStyle}">
+                <Label.Margin>
+                    <OnPlatform  
+                        x:TypeArguments="Thickness"
+                        Android="6,0,0,0"
+                        iOS="6,0,0,0"
+                        WinPhone="6,0,0,0"/>
+                </Label.Margin>
+            </Label>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer     
+                    Command="{Binding LogoutCommand}" />
+            </StackLayout.GestureRecognizers>
+        </StackLayout>
+    </Grid>
+</ContentPage>

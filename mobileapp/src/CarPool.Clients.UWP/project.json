@@ -1,0 +1,45 @@
+﻿{
+  "dependencies": {
+    "Acr.UserDialogs": "5.0.0",
+    "Acr.XamForms.UserDialogs": "5.0.0",
+    "CommonServiceLocator": "1.3.0",
+    "HockeySDK.UWP": "4.1.6",
+    "HockeySDK.Xamarin": "4.1.2",
+    "Microsoft.Azure.Mobile.Client": "3.1.0",
+    "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.1.1",
+    "Microsoft.Data.Edm": "5.7.0",
+    "Microsoft.Data.OData": "5.7.0",
+    "Microsoft.Graph": "1.2.1",
+    "Microsoft.IdentityModel.Clients.ActiveDirectory": "3.13.9",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Microsoft.OData.Client": "6.15.0",
+    "Microsoft.OData.Core": "6.15.0",
+    "Microsoft.OData.Edm": "6.15.0",
+    "Microsoft.Spatial": "6.15.0",
+    "Newtonsoft.Json": "9.0.1",
+    "Rg.Plugins.Popup": "1.0.4",
+    "Simple.OData.Client": "5.0.0-alpha2",
+    "sqlite-net-pcl": "1.1.2",
+    "SQLite.Net-PCL": "3.1.1",
+    "SQLite.Net.Async-PCL": "3.1.1",
+    "SQLiteNetExtensions": "1.3.0",
+    "Unity": "4.0.1",
+    "Xam.Plugin.Connectivity": "2.3.0",
+    "Xam.Plugins.Settings": "2.6.0.12-beta",
+    "Xamarin.FFImageLoading.Forms": "2.2.9",
+    "Xamarin.FFImageLoading.Transformations": "2.2.9",
+    "Xamarin.Forms": "2.3.4.221-pre6",
+    "Xamarin.Forms.Maps": "2.3.4.214-pre5"
+  },
+  "frameworks": {
+    "uap10.0": {}
+  },
+  "runtimes": {
+    "win10-arm": {},
+    "win10-arm-aot": {},
+    "win10-x86": {},
+    "win10-x86-aot": {},
+    "win10-x64": {},
+    "win10-x64-aot": {}
+  }
+}

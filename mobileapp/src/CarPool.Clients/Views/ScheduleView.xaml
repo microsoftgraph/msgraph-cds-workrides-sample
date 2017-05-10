@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarPool.Clients.Core.Views.ScheduleView" 
+             xmlns:behaviors="clr-namespace:CarPool.Clients.Core.Behaviors;assembly=CarPool.Clients.Core"   
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:views="clr-namespace:CarPool.Clients.Core.Views;assembly=CarPool.Clients.Core"    
+             Title="Schedule"
+             x:Name="Schedule">
+  <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="NoEventStyle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="Margin" Value="24, 0" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+            </Style>
+
+            <Style x:Key="EditSettingsStyle"  TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ButtonColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!-- NO EVENTS -->
+            <StackLayout 
+                Orientation="Vertical"
+                Grid.Row="0"
+                Grid.Column="0">
+                <Label 
+                    IsVisible="{Binding HasEvents, Converter={StaticResource InverseBoolConverter}}"
+                    Margin="42, 24, 42, 0"
+                    Text="You have no rides scheduled."
+                    Style="{StaticResource NoEventStyle}"/>
+                <StackLayout
+                    Spacing="0">
+                    <Label 
+                        IsVisible="{Binding HasEvents, Converter={StaticResource InverseBoolConverter}}"
+                        HorizontalOptions="Center"                        
+                        HorizontalTextAlignment="Center"
+                        Text="Try editing your settings"
+                        Style="{StaticResource EditSettingsStyle}"/>
+                    <StackLayout 
+                        IsVisible="{Binding HasEvents, Converter={StaticResource InverseBoolConverter}}"
+                        Orientation="Horizontal"
+                        HorizontalOptions="Center"
+                        InputTransparent="True"
+                        Margin="42, 0, 42, 12"
+                        Spacing="0">
+                        <Label 
+                            HorizontalOptions="End"                        
+                            HorizontalTextAlignment="End"
+                            Text="to find a carpool"
+                            Margin="0, 0, 5, 0"
+                            Style="{StaticResource EditSettingsStyle}"/>
+                        <ffimageloading:CachedImage
+                            HorizontalOptions="Start"
+                            WidthRequest="10"
+                            HeightRequest="20"
+                            Aspect="AspectFill">
+                            <ffimageloading:CachedImage.Source>
+                                <OnPlatform 
+                                    x:TypeArguments="ImageSource"
+                                    Android="arrow_yellow"
+                                    iOS="arrow_yellow"
+                                    WinPhone="Assets/arrow_yellow.png"/>
+                            </ffimageloading:CachedImage.Source>
+                        </ffimageloading:CachedImage>
+                    </StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding EditSettingsCommand}" />
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+
+                <!-- EVENTS -->
+                <ListView 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    ItemsSource="{Binding Events}"    
+                    IsPullToRefreshEnabled="True"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    IsGroupingEnabled="true"
+                    GroupDisplayBinding="{Binding Key}"
+                    HasUnevenRows="True" 
+                    SeparatorVisibility="None"
+                    SeparatorColor="Transparent"  
+                    CachingStrategy="RecycleElement"
+                    BackgroundColor="Transparent">
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <views:ScheduleGroupItemTemplate />
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <views:ScheduleItemTemplate TapCommand="{Binding BindingContext.ItemSelectedCommand, Source={x:Reference Schedule}}" />
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <!-- LOADING -->
+            <ActivityIndicator   
+                Grid.Row="0"
+                Grid.Column="0"
+                Color="{StaticResource WhiteColor}"
+                IsVisible="{Binding IsBusy}" 
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                <ActivityIndicator.WidthRequest>
+                    <OnPlatform 
+                        x:TypeArguments="x:Double" 
+                        iOS="100" 
+                        Android="100"
+                        WinPhone="400" />
+                </ActivityIndicator.WidthRequest>
+                <ActivityIndicator.IsRunning>
+                    <OnPlatform 
+                        x:TypeArguments="x:Boolean" 
+                        iOS="False" 
+                        Android="False"
+                        WinPhone="True" />
+                </ActivityIndicator.IsRunning>
+            </ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

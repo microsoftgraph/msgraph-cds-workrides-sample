@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarPool.Clients.Core.Views.PeopleItemTemplate" 
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core"   
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="PeopleItemPhotoPanelStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+            </Style>
+
+            <Style x:Key="PeopleItemPhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="PeopleItemPhotoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Grid 
+                RowSpacing="0"
+                Margin="24, 12, 24, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid    
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Style="{StaticResource PeopleItemPhotoPanelStyle}">
+                    <!-- NO PHOTO -->
+                    <controls:RoundedBoxView
+                        Style="{StaticResource PeopleItemPhotoStyle}"
+                        RoundedBackgroudColor="{Binding ., Converter={StaticResource OOFToColorConverter}}"/>
+                    <Label 
+                        IsVisible="{Binding OOF, Converter={StaticResource InverseBoolConverter}}"
+                        Text="{Binding DisplayName, Converter={StaticResource PeopleIconConverter}}"
+                        Style="{StaticResource PeopleItemPhotoTextStyle}"/>
+                    <!-- PROFILE PICTURE -->
+                    <ffimageloading:CachedImage   
+                        IsVisible="{Binding OOF, Converter={StaticResource InverseBoolConverter}}"
+                        Source="{Binding PhotoStream}"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        DownsampleToViewSize="True"
+                        CacheType="Disk">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation 
+                                BorderSize="2"
+                                BorderHexColor="{StaticResource WhiteColor}"/>
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                    <ffimageloading:CachedImage 
+                        IsVisible="{Binding OOF}"
+                        Source="{Binding PhotoStream}"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        DownsampleToViewSize="True"
+                        CacheType="Disk">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation 
+                                BorderSize="2"
+                                BorderHexColor="{StaticResource BlueColor}"/>
+                            <fftransformations:GrayscaleTransformation />
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                </Grid>
+                <Label 
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Text="{Binding DisplayName}"
+                    LineBreakMode="TailTruncation"
+                    TextColor="{StaticResource WhiteColor}"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    IsVisible="{Binding OOF, Converter={StaticResource InverseBoolConverter}}"
+                    Text="{Binding Distance, Converter={StaticResource PeopleDistanceConverter}}}"
+                    TextColor="{StaticResource LabelsColor}"
+                    LineBreakMode="TailTruncation"/>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    IsVisible="{Binding OOF}"
+                    Text="OOF Tomorrow"
+                    TextColor="Red"
+                    LineBreakMode="TailTruncation"/>
+
+                <ffimageloading:CachedImage
+                    Grid.RowSpan="2"
+                    Grid.Column="2">
+                    <ffimageloading:CachedImage.Source>
+                        <OnPlatform 
+                          x:TypeArguments="ImageSource"
+                          Android="arrow_yellow"
+                          iOS="arrow_yellow"
+                          WinPhone="Assets/arrow_yellow.png"/>
+                    </ffimageloading:CachedImage.Source>
+                </ffimageloading:CachedImage>
+            </Grid>
+            <Grid 
+                Grid.Row="1"
+                BackgroundColor="{StaticResource DividersLinesColor}"
+                HeightRequest="1" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

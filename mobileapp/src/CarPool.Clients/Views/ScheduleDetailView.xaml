@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:map="clr-namespace:CarPool.Clients.Core.Maps.Controls;assembly=CarPool.Clients.Core"
+             xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core"   
+             xmlns:views="clr-namespace:CarPool.Clients.Core.Views;assembly=CarPool.Clients.Core"       
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"         
+             x:Class="CarPool.Clients.Core.Views.ScheduleDetailView"
+             x:Name="ScheduleDetail"
+             Title="{Binding PickTime, Converter={StaticResource ScheduleMonthDayConverter}}">
+    <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="TimeStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+            </Style>
+
+            <Style x:Key="TimeHeadStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+            </Style>
+            
+            <Style x:Key="TitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource LargeSize}" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+            </Style>
+
+            <Style x:Key="StartTripTextStyle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ArrowImageStyle" TargetType="Image">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HeightRequest" Value="15" />
+                <Setter Property="WidthRequest" Value="15" />
+            </Style>
+
+            <Style x:Key="DriverItemPhotoStyle" TargetType="controls:RoundedBoxView">
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+
+            <Style x:Key="DriverItemPhotoTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Start trip"
+            Command="{Binding OpenMapCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform 
+                    x:TypeArguments="FileImageSource"
+                    WinPhone="Assets/Menu/menuitem_send.png" />
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!-- MAP -->
+        <Grid  
+            Grid.Row="0">
+            <map:CustomMap 
+                Pushpins="{Binding PushpinsList}"
+                Riders="{Binding RidersList}"
+                MapType="Street" />
+        </Grid>
+        <controls:GridSplitter 
+            Grid.Row="1"
+            MinHeight="150"
+			VerticalOptions="Fill"/>
+        <!-- USER DATA -->
+        <ScrollView Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid 
+                    IsVisible="{Binding IsPickup}"
+                    Grid.Row="0"
+                    Margin="24, 0, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout 
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal">
+                        <Label 
+                            Text="{Binding CurrentUser.City}"
+                            Style="{StaticResource TitleStyle}"/>
+                        <Label 
+                            Text="-" 
+                            Style="{StaticResource TitleStyle}"/>
+                        <Label 
+                            Text="{Binding CurrentUser.State}" 
+                            Style="{StaticResource TitleStyle}"/>
+                    </StackLayout>
+                    <StackLayout
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Orientation="Horizontal">
+                        <Image
+                            Style="{StaticResource ArrowImageStyle}">
+                            <Image.Source>
+                                <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="home"
+                                Android="home"
+                                WinPhone="Assets/home.png"/>
+                            </Image.Source>
+                        </Image>
+                        <Label 
+                            Text="Leave home by"
+                            VerticalOptions="Center"
+                            Style="{StaticResource TimeHeadStyle}" />
+                    </StackLayout>
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="{Binding PickTime, Converter={StaticResource CalendarTimeConverter}}" 
+                        Style="{StaticResource TimeStyle}" />
+                    <StackLayout
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                        <Image
+                            Style="{StaticResource ArrowImageStyle}">
+                            <Image.Source>
+                                <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="work"
+                                Android="work"
+                                WinPhone="Assets/work.png"/>
+                            </Image.Source>
+                        </Image>
+                        <Label 
+                            Text="Get to work by"
+                            VerticalOptions="Center"
+                            Style="{StaticResource TimeHeadStyle}" />
+                    </StackLayout>
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding ArriveTime, Converter={StaticResource CalendarTimeConverter}}"
+                        Style="{StaticResource TimeStyle}"/>
+                </Grid>
+                <Grid 
+                    IsVisible="{Binding IsPickup, Converter={StaticResource InverseBoolConverter}}"
+                    Grid.Row="0"
+                    Margin="24, 0, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout 
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal">
+                        <Label 
+                            Text="{Binding CurrentUser.City}"
+                            Style="{StaticResource TitleStyle}"/>
+                        <Label 
+                            Text="-" 
+                            Style="{StaticResource TitleStyle}"/>
+                        <Label 
+                            Text="{Binding CurrentUser.State}" 
+                            Style="{StaticResource TitleStyle}"/>
+                    </StackLayout>
+                    <StackLayout
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalOptions="Start"
+                        Orientation="Horizontal">
+                        <Image
+                            Style="{StaticResource ArrowImageStyle}">
+                            <Image.Source>
+                                <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="home"
+                                Android="home"
+                                WinPhone="Assets/work.png"/>
+                            </Image.Source>
+                        </Image>
+                        <Label 
+                            Text="Leave work by"
+                            VerticalOptions="Center"
+                            Style="{StaticResource TimeHeadStyle}" />
+                    </StackLayout>
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="{Binding PickTime, Converter={StaticResource CalendarTimeConverter}}" 
+                        Style="{StaticResource TimeStyle}" />
+                    <StackLayout
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                        <Image
+                            Style="{StaticResource ArrowImageStyle}">
+                            <Image.Source>
+                                <OnPlatform                       
+                                x:TypeArguments="ImageSource"
+                                iOS="work"
+                                Android="work"
+                                WinPhone="Assets/home.png"/>
+                            </Image.Source>
+                        </Image>
+                        <Label 
+                            Text="Get to home by"
+                            VerticalOptions="Center"
+                            Style="{StaticResource TimeHeadStyle}" />
+                    </StackLayout>
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding ArriveTime, Converter={StaticResource CalendarTimeConverter}}"
+                        Style="{StaticResource TimeStyle}"/>
+                </Grid>
+
+                <!-- RIDERS / DRIVER -->
+                <Grid Grid.Row="1">
+                    <!-- DRIVER -->
+                    <controls:StackedList  
+                        ItemsSource="{Binding Users}"  
+                        Margin="12,0,12,0"
+                        ListOrientation="Horizontal">
+                        <controls:StackedList.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <controls:RoundedBoxView
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        RoundedBackgroudColor="{Binding ProfileColor}"
+                                        Style="{StaticResource DriverItemPhotoStyle}"/>
+                                    <Label 
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Text="{Binding DisplayName, Converter={StaticResource PeopleIconConverter}}"
+                                        Style="{StaticResource DriverItemPhotoTextStyle}"/>
+                                    <!-- PROFILE PICTURE -->
+                                    <ffimageloading:CachedImage 
+                                        Source="{Binding PhotoStream}"
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        DownsampleToViewSize="True"
+                                        HeightRequest="48"
+                                        WidthRequest="48"
+                                        CacheType="Disk">
+                                        <ffimageloading:CachedImage.Transformations>
+                                            <fftransformations:CircleTransformation 
+                                            BorderSize="2"
+                                            BorderHexColor="{StaticResource BlueColor}" />
+                                        </ffimageloading:CachedImage.Transformations>
+                                    </ffimageloading:CachedImage>
+                                    <StackLayout
+                                        Grid.Row="1"
+                                        Grid.Column="0">
+                                        <Label 
+                                            HorizontalOptions="Center"
+                                            Text="{Binding DisplayName}"
+                                            LineBreakMode="TailTruncation"
+                                            TextColor="{StaticResource ButtonColor}"/>
+                                        <Label 
+                                            Text="Driver"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding IsDriver}"
+                                            TextColor="{StaticResource LabelsColor}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </controls:StackedList.ItemTemplate>
+                    </controls:StackedList>
+                </Grid>
+
+                <!-- CANCEL BUTTON -->
+                <StackLayout
+                    Grid.Row="2"
+                    VerticalOptions="StartAndExpand"
+                    Margin="0, 12">
+                    <controls:ContentViewRoundedCorners 
+                            HeightRequest="65"
+                            CornerRadius="32"
+                            Padding="1"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            Margin="72, 0, 72, 0">
+                        <controls:ContentViewRoundedCorners 
+                                BackgroundColor="{StaticResource BackgroundColor}"
+                                CornerRadius="32">
+                            <Label     
+                                Text="Cancel this trip"
+                                TextColor="{StaticResource ButtonColor}" 
+                                FontSize="{StaticResource LargeSize}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+                            <controls:ContentViewRoundedCorners.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                        Command="{Binding CancelTripCommand}"                 
+                                        NumberOfTapsRequired="1" />
+                            </controls:ContentViewRoundedCorners.GestureRecognizers>
+                        </controls:ContentViewRoundedCorners>
+                    </controls:ContentViewRoundedCorners>
+                    <Label
+                        Grid.Column="0"
+                        Text="Leave this carpool"
+                        IsVisible="{Binding IsDriver}"
+                        FontSize="{StaticResource MediumSize}"
+                        TextColor="{StaticResource ButtonColor}"
+                        HorizontalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                    Command="{Binding LeaveCarpoolCommand}"                 
+                                    NumberOfTapsRequired="1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <!-- LOADING -->
+                <ActivityIndicator   
+                    Grid.RowSpan="3"
+                    Color="{StaticResource WhiteColor}"
+                    IsRunning="{Binding IsBusy}" 
+                    IsVisible="{Binding IsBusy}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                    <ActivityIndicator.WidthRequest>
+                        <OnPlatform 
+                            x:TypeArguments="x:Double" 
+                            iOS="100" 
+                            Android="100"
+                            WinPhone="400" />
+                    </ActivityIndicator.WidthRequest>
+                </ActivityIndicator>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

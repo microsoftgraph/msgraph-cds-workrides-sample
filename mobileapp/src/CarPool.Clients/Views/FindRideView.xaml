@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarPool.Clients.Core.Views.FindRideView"         
+             xmlns:views="clr-namespace:CarPool.Clients.Core.Views;assembly=CarPool.Clients.Core"    
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:behaviors="clr-namespace:CarPool.Clients.Core.Behaviors;assembly=CarPool.Clients.Core"
+             Title="Find a ride">
+    <ContentPage.BackgroundImage>
+        <OnPlatform 
+            x:TypeArguments="x:String"
+            Android="background"
+            iOS="background"
+            WinPhone="Assets/background.png"/>
+    </ContentPage.BackgroundImage>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="NoDriverStyle"  TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="{StaticResource LabelsColor}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="Margin" Value="24, 0, 24, 0" />
+            </Style>
+
+            <Style x:Key="EditSettingsStyle"  TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ButtonColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="Margin" Value="24, 0, 24, 0" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Edit settings"
+            Command="{Binding EditRideSettingsCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform 
+                    x:TypeArguments="FileImageSource"
+                    WinPhone="Assets/Menu/menuitem_edit.png" />
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout
+            Grid.Row="0"
+            IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}">
+            <StackLayout 
+                Margin="24, 100, 24, 0"
+                Orientation="Vertical"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsVisible="{Binding People.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter='Inverse'}}">
+                <Label 
+                    Text="We couldn't find you a ride. You can try changing your Settings or we can let you know if a rider becomes available."
+                    Style="{StaticResource NoDriverStyle}"/>
+                <StackLayout 
+                    HorizontalOptions="Center"
+                    Orientation="Horizontal">
+                    <Label 
+                        Text="Edit settings"
+                        Style="{StaticResource EditSettingsStyle}"/>
+                    <ffimageloading:CachedImage
+                        WidthRequest="40"
+                        HorizontalOptions="Start">
+                        <ffimageloading:CachedImage.Source>
+                            <OnPlatform 
+                              x:TypeArguments="ImageSource"
+                              Android="arrow_yellow"
+                              iOS="arrow_yellow"
+                              WinPhone="Assets/arrow_yellow.png"/>
+                        </ffimageloading:CachedImage.Source>
+                    </ffimageloading:CachedImage>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer                     
+                            Command="{Binding EditSettingsCommand}" />
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </StackLayout>
+        
+            <!-- PEOPLE -->
+            <ListView     
+                ItemsSource="{Binding People, Mode=OneWay}"         
+                behaviors:ItemTappedCommandListView.ItemTappedCommand="{Binding PeopleSelectedCommand}"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                CachingStrategy="RecycleElement"
+                BackgroundColor="Transparent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <views:PeopleItemTemplate />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <Grid    
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" >
+                        <views:PeopleFooterTemplate
+                            IsVisible="{Binding People.Count, Converter={StaticResource ItemsToBoolConverter}, ConverterParameter=6}"/>
+                    </Grid>
+                </ListView.Footer>
+            </ListView>
+
+        </StackLayout>
+
+        <!-- LOADING -->
+        <ActivityIndicator   
+            Grid.Row="0"
+            Color="{StaticResource WhiteColor}"
+            IsVisible="{Binding IsBusy}" 
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
+            <ActivityIndicator.WidthRequest>
+                <OnPlatform 
+                    x:TypeArguments="x:Double" 
+                    iOS="100" 
+                    Android="100"
+                    WinPhone="400" />
+            </ActivityIndicator.WidthRequest>
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

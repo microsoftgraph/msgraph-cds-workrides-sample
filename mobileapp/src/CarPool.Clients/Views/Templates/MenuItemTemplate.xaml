@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:CarPool.Clients.Core.Controls;assembly=CarPool.Clients.Core"
+    x:Class="CarPool.Clients.Core.Views.MenuItemTemplate">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            
+            <Style x:Key="MenuItemTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="Margin" Value="12, 0" />
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <StackLayout            
+            Orientation="Horizontal">
+            <StackLayout.Margin>
+                <OnPlatform  
+                    x:TypeArguments="Thickness"
+                    Android="36, 9, 0, 0"
+                    iOS="36, 9, 0, 0"
+                    WinPhone="12, 0, 0, 12"/>
+            </StackLayout.Margin>
+            <StackLayout.Triggers>
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding IsEnabled, Mode=TwoWay}"
+                    Value="False">
+                    <Setter Property="Opacity"             
+                            Value="0.6" />
+                </DataTrigger>
+            </StackLayout.Triggers>
+            <Grid
+                WidthRequest="36"
+                HeightRequest="36">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition Width="12"/>
+                </Grid.ColumnDefinitions>
+                <Image 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Source="{Binding MenuItemType, Converter={StaticResource MenuItemTypeConverter}}"
+                    Aspect="AspectFit"
+                    WidthRequest="24"
+                    HeightRequest="24"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+                <!-- BADGE ALERT -->
+                <Grid
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalOptions="End" 
+                    HeightRequest="18" 
+                    WidthRequest="18" 
+                    Grid.ColumnSpan="2"
+                    IsVisible="{Binding HasNotification}">
+                    <controls:RoundedBoxView 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        RoundedBackgroudColor="Red" 
+                        HeightRequest="18" 
+                        WidthRequest="18"   
+                        CornerRadius="48" 
+                        HorizontalOptions="Center" 
+                        VerticalOptions="Start">
+                    </controls:RoundedBoxView>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="!" 
+                        TextColor="{StaticResource WhiteColor}"
+                        HorizontalOptions="Center" 
+                        VerticalOptions="Start" />
+                </Grid>
+            </Grid>
+            <Label 
+                x:Name="TitleLabel"
+                Text="{Binding Title}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Style="{StaticResource MenuItemTextStyle}">
+                <Label.Margin>
+                    <OnPlatform  
+                        x:TypeArguments="Thickness"
+                        Android="6,0,0,0"
+                        iOS="6,0,0,0"
+                        WinPhone="6,0,0,0"/>
+                </Label.Margin>
+            </Label>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
