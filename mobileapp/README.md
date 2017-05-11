@@ -1,8 +1,8 @@
 # WorkRides Mobile App
 
-The mobile app described here uses [Microsoft Graph](https://graph.microsoft.com/) APIs to get people data and stores in [Common Data Service](https://aka.ms/CommonDataService) via Web API. This mobile app connects people to carpool to work. Users can sign in to the app using their work identities (AAD), able to carpool with interested employees who are with in their org and the people they closely work with. 
+The mobile app described here uses [Microsoft Graph](https://graph.microsoft.com/) APIs to get people data and stores in [Common Data Service](https://aka.ms/CommonDataService) via Web API. This mobile app connects people to carpool to work. Users can sign in to the app using their work identities (AAD) and find other employees in their org and/or the people they closely work with to Carpool to work.
 
-This app demonstrates that professional developers are able to build data rich, people centric apps with their platform of choice using [Microsoft Graph](https://graph.microsoft.com/) APIs and [Common Data Service](https://aka.ms/CommonDataService).
+This app demonstrates that professional developers are able to build people centric, data rich apps with their platform of choice using [Microsoft Graph](https://graph.microsoft.com/) APIs and [Common Data Service](https://aka.ms/CommonDataService).
 
 <img src="../media/xamarin_login.png" Height="350" Width="200" />
 <img src="../media/xamarin_menu.png" Height="350" Width="200" />
@@ -22,7 +22,6 @@ This app demonstrates that professional developers are able to build data rich, 
 * [Android SDK Tools](https://developer.android.com/studio/releases/sdk-tools.html) 25.2.3 or higher
 
 ## Mobile App (Xamarin Forms App)
-
 This project exercises the following platforms, frameworks or features:
 
 * Xamarin.Forms
@@ -48,16 +47,14 @@ The app targets **three** platforms:
 As of 06/05/2017, WorkRides features 88.6% code share (11% iOS / 11.2% Android / 11.6% Windows).
 
 ## Setup
-
 - **Download** or clone the repository. There are a solution with seven projects.
 - **Rebuild** the solution to get all necessary **NuGet** packages.
 
-This app will run as is with the preconfigured settings so that you can explore and learn see how it works. If you want to plug your tenant data you will want to edit **AppSettings.cs** file which is part of the Portable Class Library to update the settings with the values specific to your tenant and APIs keys.
+This app will run as is with the preconfigured settings so that you can try and learn how it works. If you want to plug your tenant data you need to edit **AppSettings.cs** file which is part of the Portable Class Library to update the settings with the values specific to your environment.
 
-The following sections will walk you through the steps involved to build this app. You can follow these steps to recreate an environment for you. 
+The following sections will walk you through the steps involved to build this app. You can follow these steps to understand how such an app can be built using Microsoft's tools and technologies. 
 
 ### App Registration
-
 One of the core features of this app is work based authentication. To enable this, first the app needed to be registered with Azure Active Directory. The registration was easy and done in [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications) after loggin in to our directory. WorkRides is configured as a multi-tenant app. So it can be deployed in many organizations with data isolation. 
 
 * Sign in to the [Azure portal](https://portal.azure.com).
@@ -197,10 +194,10 @@ For example, to retrieve a list of users from my organization (i.e. GET /users):
 var result = await GraphClient.Instance.Beta.Users.Request().GetAsync();
 ```
 
-Aditionally WorkRides uses [query parameters](https://developer.microsoft.com/en-us/graph/docs/overview/query_parameters) to control the result and the returned data:
+Aditionally WorkRides uses [query parameters](https://developer.microsoft.com/en-us/graph/docs/overview/query_parameters) to control the result and the returned amount of data:
 * Filter the query result with the *Filter* method
- (in REST is provided by the $filter parameter). For example to obtain the users from my department.
-* Control the amuont of data returned in the response using the *Select* method (in REST is provided by the $select parameter).
+ (in REST $filter parameter is used for this). For example to obtain the users from my department.
+* Control the amuont of data returned in the response using the *Select* method (in REST $select parameter is used for this).
 * etc.
 
 ```csharp
@@ -212,12 +209,11 @@ var result = await GraphClient.Instance.Beta.Users.Request()
 
 
 ### Maps services
-
 The WorkRides app use Maps services to calculate and display the user routes and also to geocode the user home/work address to geopositions.
 
-The map service is based on the native approach for each platform.
+The map service uses native APIs for each platform. i.e.
 
-* Android: Using Google maps api. You should provide a valid [directions gmaps api key](https://developer.xamarin.com/guides/android/platform_features/maps_and_location/maps/obtaining_a_google_maps_api_key/). This key must be configured in the **AppSettings.GoogleMapsAPIKey** field.
+* Android: Google Maps API is used. You should provide a valid [directions gmaps api key](https://developer.xamarin.com/guides/android/platform_features/maps_and_location/maps/obtaining_a_google_maps_api_key/). This key must be configured in the **AppSettings.GoogleMapsAPIKey** field.
 
 ```csharp
 public const string GoogleMapsAPIKey = "<GMAPS API KEY>";
@@ -231,15 +227,13 @@ Also must be configured in the **Properties/AndroidManifest.xml** file.
 </application>
 ```
 
-* iOS: Using iOS maps api. It's provided directly by the device.
+* iOS: iOS Maps API is used. It's provided directly by the device.
 
-* UWP: Using Bing maps api. You should provide a valid [bing api key](https://msdn.microsoft.com/es-es/library/ff428642.aspx). This key must be configured in the **AppSettings.BingMapsAPIKey** field.
+* UWP: Bing Maps API is used. You should provide a valid [bing api key](https://msdn.microsoft.com/es-es/library/ff428642.aspx). This key must be configured in the **AppSettings.BingMapsAPIKey** field.
 
 ```csharp
 public const string BingMapsAPIKey = "<BING API KEY>";
 ```
-
-*Enjoy!*
 
 ## Clean and Rebuild
 If you see build issues when pulling updates from the repo, try cleaning and rebuilding the solution.
