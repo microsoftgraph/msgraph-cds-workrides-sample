@@ -1,8 +1,8 @@
-# CarPool Xamarin App
+# WorkRides Mobile App
 
-Mobile App that connects people to carpool to work. Users can sign in to the app using their work identities (AAD), able to carpool with interested employees who are with in their org or out side their org or the people they closely work with. 
+The mobile app described here uses [Microsoft Graph](https://graph.microsoft.com/) APIs to get people data and stores in [Common Data Service](https://aka.ms/CommonDataService) via Web API. This mobile app connects people to carpool to work. Users can sign in to the app using their work identities (AAD), able to carpool with interested employees who are with in their org and the people they closely work with. 
 
-Demonstrates that developers are able to build rich, people centric and data rich apps with their platform of choice using Microsoft APIs.
+This app demonstrates that professional developers are able to build data rich, people centric apps with their platform of choice using [Microsoft Graph](https://graph.microsoft.com/) APIs and [Common Data Service](https://aka.ms/CommonDataService).
 
 <img src="../media/xamarin_login.png" Height="350" Width="200" />
 <img src="../media/xamarin_menu.png" Height="350" Width="200" />
@@ -21,7 +21,7 @@ Demonstrates that developers are able to build rich, people centric and data ric
 * __Visual Studio Community Edition is fully supported!__
 * [Android SDK Tools](https://developer.android.com/studio/releases/sdk-tools.html) 25.2.3 or higher
 
-## Xamarin App
+## Mobile App (Xamarin Forms App)
 
 This project exercises the following platforms, frameworks or features:
 
@@ -47,33 +47,34 @@ The app targets **three** platforms:
 
 As of 06/05/2017, WorkRides features 88.6% code share (11% iOS / 11.2% Android / 11.6% Windows).
 
-
 ## Setup
 
-**Download** or clone the repository. There are a solution with seven projects.
+- **Download** or clone the repository. There are a solution with seven projects.
+- **Rebuild** the solution to get all necessary **NuGet** packages.
 
-**Rebuild** the solution to get all necessary **NuGet** packages.
+This app will run as is with the preconfigured settings so that you can explore and learn see how it works. If you want to plug your tenant data you will want to edit **AppSettings.cs** file which is part of the Portable Class Library to update the settings with the values specific to your tenant and APIs keys.
 
-Access to **AppSettings.cs** file available in the Portable Class Library to introduce your Azure endpoints and APIs keys.
+The following sections will walk you through the steps involved to build this app. You can follow these steps to recreate an environment for you. 
 
 ### App Registration
 
-To integrate a Xamarin app with your work Azure AD firstly you must [register it as an authorized application](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications) in your directory:
+One of the core features of this app is work based authentication. To enable this, first the app needed to be registered with Azure Active Directory. The registration was easy and done in [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications) after loggin in to our directory. WorkRides is configured as a multi-tenant app. So it can be deployed in many organizations with data isolation. 
 
 * Sign in to the [Azure portal](https://portal.azure.com).
 * Choose your Azure AD tenant by selecting your account in the top right corner of the page.
 * In the left-hand navigation pane, choose More Services, click App Registrations, and click Add.
 * Create a new **Native** application with your preferred name. For native applications usually the redirect uri is configured to http://localhost.
 
-Once the app have been created, Azure assigned an unique id called **Application ID** (ie.: Application ID : c8c39d80-e4ad-4e07-86af-de46afcf4b56). This ID will be used in next step in the app configuration.
+When the app has been created, an unique id called **Application ID** (e.g. c8c39d80-e4ad-4e07-86af-de46afcf4b56) is assigned. This ID will be used subsequently to uniquely identify the app registration by the client app and also the Microsoft authorization endpint to facilitate sign-in process.
+
+In order for us to use Microsoft Graph API and CDS necessary permissions need to be added to the application object to access **Microsoft Graph** API and **Common Data Service** resources.
 
 #### Required permissions for Microsoft Graph
-
-Once the app has been created on Azure AD, permissions must be provided to allow the access from WorkRides to the different information it needs. To access to the Graph API, we must add the permission to **Microsoft Graph**.
+Under the required permissions option add Microsoft Graph.
 
 <img src="../media/add_graph_api.png" Width="500" Height="200" />
 
-The required permissions from WorkRides to work with the graph apis are:
+Since this app needs to access user profile, calendar, email you need to configure following permissions:
 
 * Permissions to sign in with AAD
   * Sign users in (*openid*)
@@ -90,10 +91,10 @@ The required permissions from WorkRides to work with the graph apis are:
 * Permissions to send emails
   * Send email as a user (*Mail.Send*)
 
-A detailed information about permissions and their allowed actions can be found on the [Graph API documentation](https://developer.microsoft.com/en-us/graph/docs/authorization/permission_scopes).
+You can learn more about permissions and allowed actions from [Graph API documentation](https://developer.microsoft.com/en-us/graph/docs/authorization/permission_scopes).
 
 #### Required permissions for Common Data Service
-To access to the Common Data Service API, we must also add the permission to **PowerApps Runtime Service** and **Windows Azure Service Management API**.
+To access to the Common Data Service API, you will also need to add **PowerApps Runtime Service** and **Windows Azure Service Management API**.
 
 The required permissions from WorkRides to work with the CDS APIs are:
 
@@ -105,28 +106,15 @@ The required permissions from WorkRides to work with the CDS APIs are:
 Detailed information about application registration for an app that will interact with CDS can be found in [Get started with the Common Data Service SDK - Application registration](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-get-started#application-registration-1)
 
 #### Grant Permissions
-
-The first time the user authenticate into the app, he will be prompt with a dialog to grant permission to the permissions we selected previously. 
+When the user signs in into the app for the first time, a consent dialog is shown to the user to grant the app permissions to access Microsoft Graph and the CDS on behalf of the user
 
 <img src="../media/xamarin_consent.png" Height="350" Width="210" />
 
-As an AAD Administrator, if you want to allow the application for the entire organization so the user can access without visualize the consent dialog, you can **Grant permissions**.
-
-<img src="../media/administrator_grant.png" />
-
-#### Revoke Permissions
-
-As an user of the application, if you agreed with the consent dialog but actually you want revoke your consent, you can enter into your [Access Panel Applications Portal](https://myapps.microsoft.com) and remove the application.
-
-<img src="../media/revoke_user_grant.png" />
-
-If the application was granted by an administrator, the app won't appear in the Apps panel.
 
 ### Authentication
+To enable work based authentication you will need to add the nuget package for [**A**ctive **D**irectory **A**uthentication **L**ibrary](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet) and configure to work with Azure Active Directory using the client ID that was generated during application registration in Azure Portal.
 
-The authentication have been implemented using the [ADAL Library](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet).
-
-The authentication process have been integrated as a **DependencyService** with different platform implementations. The invocation of the **Authenticate** method will display an authentication dialog:
+The authentication process has been taken care in the app by **DependencyService** with trivial platform specific implementations. Invoking the **Authenticate** method will display an authentication dialog:
 
 ```csharp
 private Task<AuthenticationResult> AccessToken()
@@ -143,7 +131,7 @@ private Task<AuthenticationResult> AccessToken()
 
 <img src="../media/adal_authentication.png" Height="350" Width="210" />
 
-The sign out process also is implemented in the **DependencyService**. It delete the ADAL sdk Cache to force the user to authenticate. 
+The sign out feature also has been implemented by **DependencyService**. The following code signs out an user. 
 
 ```csharp
 public void SignOut()
@@ -167,8 +155,7 @@ public const string GraphAuthorityUri = "https://login.windows.net/<TENANT ID>";
 ```
 
 #### Multiple authentication calls
-
-The ADAL SDK allow the reuse of the authentication token for new authorization requests based on a **AuthenticationContext.TokenCache**. In the WorkRides app, the same authentication token is used to provide access to the **Graph API** and to the **CDS API**.
+The ADAL SDK allows the reuse of the authentication token for new authorization requests based on **AuthenticationContext.TokenCache**. In the WorkRides app, the same authentication token is used to provide access to the **Graph API** and to the **CDS API**.
 
 ```csharp
 private Task<AuthenticationResult> AccessToken()
@@ -183,13 +170,13 @@ private Task<AuthenticationResult> AccessToken()
 }
 ```
 
-### Calling Graph
+### Calling Microsoft Graph
+To access Microsoft Graph you can either use Microsoft Graph REST API or 
+the client library. In WorkRides app we used [Microsoft Graph .NET Client Library](https://github.com/microsoftgraph/msgraph-sdk-dotnet). 
 
-The integration with the graph api have been implemented using [Microsoft Graph .NET Client Library](https://github.com/microsoftgraph/msgraph-sdk-dotnet). 
+Some features included in the WorkRides applications have not been included into the sdk yet (ie: People API, getMailTips API). Hence we called the Microsoft Graph REST APIs using HttpClient and [NewtonSoft library](https://github.com/JamesNK/Newtonsoft.Json/).
 
-Some features included in the WorkRides applications have not been included into the sdk yet (ie: people api, getMailTips api). This use cases have been implemented using HttpClient and [NewtonSoft library](https://github.com/JamesNK/Newtonsoft.Json/).
-
-The key of the Graph usage was the *GraphClient* class singleton instance that provide a single point to the authenticated user token,. The authentication process is using a  DelegateAuthenticationProvider, as described in the [library overview](https://github.com/microsoftgraph/msgraph-sdk-dotnet/blob/dev/docs/overview.md):
+The *GraphClient* singleton class in the app is used to access the Microsoft Graph functionality. The authentication process is using DelegateAuthenticationProvider, as described in the [library overview](https://github.com/microsoftgraph/msgraph-sdk-dotnet/blob/dev/docs/overview.md):
 
 ```csharp
 Beta = new GraphServiceClient(
@@ -202,15 +189,15 @@ Beta = new GraphServiceClient(
             }));
 ```
 
-Once you have completed authentication and have GraphClient initialized, you can begin to make calls to the service. The requests in the SDK follow the format of the Microsoft Graph API's RESTful syntax.
+Once you have completed authentication and have GraphClient initialized, you can begin to make calls to the Microsoft Graph service. The requests in the SDK follows the format of the Microsoft Graph API's RESTful syntax.
 
-For example, to retrieve a list of users from my organization (GET /users):
+For example, to retrieve a list of users from my organization (i.e. GET /users):
 
 ```csharp
 var result = await GraphClient.Instance.Beta.Users.Request().GetAsync();
 ```
 
-Aditionally WorkRides uses [query parameters](https://developer.microsoft.com/en-us/graph/docs/overview/query_parameters) to control the result and the returned amount of data:
+Aditionally WorkRides uses [query parameters](https://developer.microsoft.com/en-us/graph/docs/overview/query_parameters) to control the result and the returned data:
 * Filter the query result with the *Filter* method
  (in REST is provided by the $filter parameter). For example to obtain the users from my department.
 * Control the amuont of data returned in the response using the *Select* method (in REST is provided by the $select parameter).
@@ -251,7 +238,6 @@ Also must be configured in the **Properties/AndroidManifest.xml** file.
 ```csharp
 public const string BingMapsAPIKey = "<BING API KEY>";
 ```
-
 
 *Enjoy!*
 
