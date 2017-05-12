@@ -29,14 +29,14 @@ Contoso is one of the first customers to acquire this app and make it available 
 
 Please follow through the links provided below to learn how the individual pieces have been built and recreate the end-to-end experience for yourself.
 
-### Professional app developer
-1. [Mobile App](./mobileapp/README.md) - Xamarin Forms apps that uses Microsoft Graph APIs to get people data and stores in Common Data Service via Web API.
+### Professional app developer - build an application using code
+- [Mobile App](./mobileapp/README.md) - Xamarin Forms apps that uses Microsoft Graph APIs to get people data and stores in Common Data Service via Web API.
 
-### Enterprise power users
-3. [CDS](./CDS/README.md) - Contains Excel Add-In that helps power users to look into and work with CDS.
-4. [PowerApps App](./mobileapp/README.md) - PowerApps app built by an enterprise power user who uses Excel like expression language to build a LOB mobile app with out knowing to write code.
-5. [Flow](./mobileapp/README.md) - Expense approval workflow built by an enterprise power user that uses Microsoft Flow which sends approval emails to the manager and other departments.
-6. [PowerBI dashboard](./mobileapp/README.md) - A dashboard built by an enterprise power user that helps analysing the ride share data.
+### Enterprise power users - leverage data and extend a solution using no code
+- [CDS](./CDS/README.md) - Contains Excel Add-In that helps power users to look into and work with CDS.
+- [PowerApps App](./mobileapp/README.md) - PowerApps app built by an enterprise power user who uses Excel like expression language to build a LOB mobile app with out knowing to write code.
+- [Flow](./mobileapp/README.md) - Expense approval workflow built by an enterprise power user that uses Microsoft Flow which sends approval emails to the manager and other departments.
+- [PowerBI dashboard](./mobileapp/README.md) - A dashboard built by an enterprise power user that helps analysing the ride share data.
 
 ### Technical overview
 
