@@ -48,8 +48,7 @@ namespace Carpool.Clients.ViewModels.Base
 
             //RegisterSingleton<IDataService, SQLiteService>();
             //RegisterSingleton<IDataService, AzureMobileAppService>();
-            //RegisterSingleton<IDataService, CDSDataProvider>();
-            RegisterSingleton<IDataService, CDSODataProvider>();
+            RegisterSingleton<IDataService, CDSDataProvider>();
 
             // ViewModels
             _unityContainer.RegisterType<DriveViewModel>();
