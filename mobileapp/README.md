@@ -263,17 +263,30 @@ public async Task<IEnumerable<Employee>> Get()
 
 The code that calls the Web API can be seen in the *CarPool.Clients.Core* project. Specifically the *CarPool.Clients.Core.Services.Data.CDSDataProvider* class contains all the Web API interaction code.
 
-A good example of the calls to the Web API can be seen in the *GetAllRecordsAsync* method:
+A good example of the calls to the Web API can be seen in the *GetAllEmployeesAsync* and *GetAllRecordsAsync* methods:
 
 ```csharp
+public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
+{
+    return await GetAllRecordsAsync<Employee>(EmployeeAPI);
+}
+
 private async Task<IEnumerable<T>> GetAllRecordsAsync<T>(string api)
 {
+    //Prepare to make HTTP request
     var client = new HttpClient();
     client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+
+    //Build URI string with web API as the base and the specific API added as a suffix
     var uriString = serviceApiUri + api;
+
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
+
+    //Make GET request and capture response
     HttpResponseMessage response = await client.GetAsync(uriString);
     var responseString = await response.Content.ReadAsStringAsync();
+
+    //Transform JSON response into array of data model objects
     var results = JsonConvert.DeserializeObject<T[]>(responseString);
 
     return results;
