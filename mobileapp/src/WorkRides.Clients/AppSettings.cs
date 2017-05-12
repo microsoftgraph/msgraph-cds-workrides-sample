@@ -29,9 +29,9 @@ namespace CarPool.Clients
         public const string AzureMobileAppEndpoint = "http://<INSERT YOUR EASY TABLES>/";
         
         // Maps
-        public const string BingMapsAPIKey = "<INSERT YOUR BING KEY>";
-        public const string GoogleMapsAPIKey = "<INSERT YOUR GMAPS KEY>";
-        public const string GoogleMapsGeocodeAPIKey = "<INSERT YOUR GMAPS GEOCODER KEY>";
+        public const string BingMapsAPIKey = "pQUKHgYH426DqgbLZtlq~BQ3H10m5gxwUsYa4qiw18Q~ArXhd2-QP9UR2WHV8EdNkmFIEn6VEGb0m-_EOvJOmKzkL14lcoEdVef_fS9Jc6gb";
+        public const string GoogleMapsAPIKey = "AIzaSyBoQAHK-txnbmD8zjebtVdg6St0GrPciUY";
+        public const string GoogleMapsGeocodeAPIKey = "AIzaSyB_giuFgQGC3owq0uWC3JWzIZUDiZy7NGU";
         public const double MapDistanceMiles = 12;
         public static int currentColor = 0;
         public static Color[] RiderColors = new Color[] {
