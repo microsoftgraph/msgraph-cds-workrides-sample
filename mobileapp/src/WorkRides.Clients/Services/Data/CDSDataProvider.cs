@@ -69,11 +69,8 @@ namespace CarPool.Clients.Core.Services.Data
         
         private AuthenticationResult AccessToken()
         {
-            // D365.io security information
-            // https://microsoft-my.sharepoint.com/personal/nimak_microsoft_com/_layouts/OneNote.aspx?id=%2Fpersonal%2Fnimak_microsoft_com%2FDocuments%2FShared%20with%20Everyone%2FNima%20-%20Shared&wd=target%28Dev%20Experience.one%7C55E51F59-7CBA-4715-9FF0-8DD533A6C47F%2FPlant%20Maintenance%20Demo%20App%7C32D1FBB5-8536-49B6-AAB2-90FAD05D1D39%2F%29
-            // onenote: https://microsoft-my.sharepoint.com/personal/nimak_microsoft_com/Documents/Shared%20with%20Everyone/Nima%20-%20Shared/Dev%20Experience.one#Plant%20Maintenance%20Demo%20App&section-id={55E51F59-7CBA-4715-9FF0-8DD533A6C47F}&page-id={32D1FBB5-8536-49B6-AAB2-90FAD05D1D39}&end
-            string resourceUri = "https://fabrikamco.onmicrosoft.com/c6e243df-7fa8-454c-8fc4-0089dc7574e2"; //Nima's domain - "https://d365io.onmicrosoft.com/3b340f85-2235-44e4-8756-e4234198b0e1";
-            string clientId = "adfdd950-ecd3-4b3e-9257-57acbcb3fcdf"; //Point to app that has permissions to the functions app //Nima's domain - "20f8ba51-631b-4250-a058-13dc3ea5317d";
+            string resourceUri = "https://fabrikamco.onmicrosoft.com/c6e243df-7fa8-454c-8fc4-0089dc7574e2";
+            string clientId = "adfdd950-ecd3-4b3e-9257-57acbcb3fcdf"; //Point to app that has permissions to the functions app
             string redirectUri = "http://localhost/";
 
 
@@ -109,16 +106,21 @@ namespace CarPool.Clients.Core.Services.Data
 
         private async Task<IEnumerable<T>> GetAllRecordsAsync<T>(string api)
         {
+            //Prepare to make HTTP request
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+
+            //Build URI string with web API as the base and the specific API added as a suffix
             var uriString = serviceApiUri + api;
+
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
+
+            //Make GET request and capture response
             HttpResponseMessage response = await client.GetAsync(uriString);
             var responseString = await response.Content.ReadAsStringAsync();
-            var results = JsonConvert.DeserializeObject<T[]>(responseString);
 
-            //Debug
-            //throw new Exception("uriString= '" + uriString + "' responseString= '" + responseString.ToString() + "'");
+            //Transform JSON response into array of data model objects
+            var results = JsonConvert.DeserializeObject<T[]>(responseString);
 
             return results;
         }
@@ -192,9 +194,6 @@ namespace CarPool.Clients.Core.Services.Data
             var requestString = JsonConvert.SerializeObject(item);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
             HttpResponseMessage response = await client.PostAsync(updateUriString, new StringContent(requestString, Encoding.UTF8, ApplicationJSON));
-
-            //Debug
-            //throw new Exception("requestString= '" + requestString + "' response= '" + response.ToString() + "'");
         }
 
         public async Task InsertOrUpdateDriverAsync(Driver item)

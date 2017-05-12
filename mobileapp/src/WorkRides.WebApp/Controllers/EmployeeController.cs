@@ -21,8 +21,10 @@ namespace CarPool.WebApp.Controllers
         // GET: api/Employee
         public async Task<IEnumerable<Employee>> Get()
         {
+            //Get CDS SDK reference ready to communicate with CDS environment
             using (Client client = await CdsHelper.CreateClientAsync(this.Request))
             {
+                //Build query
                 DataRangeSkipClauseBuilder<CarPool.Web.Library.Employee> query = client.GetRelationalEntitySet<CarPool.Web.Library.Employee>()
                            .CreateQueryBuilder()
                            .Project(pc => pc
@@ -41,11 +43,13 @@ namespace CarPool.WebApp.Controllers
                                             .SelectField(f => f.WorkLongitude)
                                         );
 
+                //Execute query
                 OperationResult<IReadOnlyList<CarPool.Web.Library.Employee>> queryResult = null;
                 await client.CreateRelationalBatchExecuter(RelationalBatchExecutionMode.Transactional)
                     .Query(query, out queryResult)
                     .ExecuteAsync();
 
+                //Transform query results
                 var employees = new List<Employee>();
                 foreach (var entry in queryResult.Result)
                 {
