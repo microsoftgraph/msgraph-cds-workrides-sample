@@ -4,15 +4,13 @@ The mobile app described here uses [Microsoft Graph](https://graph.microsoft.com
 
 This app demonstrates that professional developers are able to build people centric, data rich apps with their platform of choice using [Microsoft Graph](https://graph.microsoft.com/) APIs and [Common Data Service](https://aka.ms/CommonDataService).
 
-<img src="../media/xamarin_login.png" Height="350" Width="200" />
-<img src="../media/xamarin_menu.png" Height="350" Width="200" />
-<img src="../media/xamarin_find_a_ride.png" Height="350" Width="200" />
-<img src="../media/xamarin_ride_details.png" Height="350" Width="200" />
-<img src="../media/xamarin_my_riders.png" Height="350" Width="200" />
-<img src="../media/xamarin_rider_requests.png" Height="350" Width="200" />
-<img src="../media/xamarin_schedule_details.png" Height="350" Width="200" />
-<img src="../media/xamarin_send_mail.png" Height="350" Width="200" />
-<img src="../media/xamarin_settings.png" Height="350" Width="200" />
+<img src="../media/xamarin_login.png" Height="350" Width="200" /> <img src="../media/xamarin_userpreferences.png" Height="350" Width="200" /> <img src="../media/xamarin_riderpreferences.png" Height="350" Width="200" /> <img src="../media/xamarin_find_a_ride.png" Height="350" Width="200" /> 
+
+<img src="../media/xamarin_ride_details.png" Height="350" Width="200" /> <img src="../media/xamarin_send_mail.png" Height="350" Width="200" /> <img src="../media/xamarin_menu.png" Height="350" Width="200" /> <img src="../media/xamarin_rider_requests.png" Height="350" Width="200" /> 
+
+<img src="../media/xamarin_inspect_rider.png" Height="350" Width="200" /> <img src="../media/xamarin_my_riders.png" Height="350" Width="200" /> <img src="../media/xamarin_schedule.png" Height="350" Width="200" /> <img src="../media/xamarin_schedule_details.png" Height="350" Width="200" />
+
+
 
 ## Requirements
 * Windows 10
@@ -326,6 +324,11 @@ Also must be configured in the **Properties/AndroidManifest.xml** file.
 ```csharp
 public const string BingMapsAPIKey = "<BING API KEY>";
 ```
+
+### Maps Geocoding services
+
+Aditionally to the maps service to display the map and calculate the route, must be added a key to the geocoder api of google maps. You can obtain an api key [here](https://developers.google.com/maps/documentation/geocoding/get-api-key?hl=es-419).
+
 
 ## Clean and Rebuild
 If you see build issues when pulling updates from the repo, try cleaning and rebuilding the solution.

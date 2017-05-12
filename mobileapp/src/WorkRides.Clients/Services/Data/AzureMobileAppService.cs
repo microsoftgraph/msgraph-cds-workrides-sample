@@ -28,7 +28,7 @@ namespace CarPool.Clients.Core.Services.Data
             }
 
             // Create our client
-            _client = new MobileServiceClient(AppSettings.AzureMobileAppEndpoint);
+            _client = new MobileServiceClient("http://<INSERT YOUR EASY TABLES>/");
 
             _employeeTable = _client.GetTable<Employee>();
             _rideDetailsTable = _client.GetTable<RideDetails>();

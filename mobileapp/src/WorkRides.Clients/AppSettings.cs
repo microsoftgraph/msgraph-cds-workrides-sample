@@ -24,9 +24,6 @@ namespace CarPool.Clients
         // Create an instance of AuthenticationContext to acquire an Azure access token  
         // OAuth2 authority Uri  
         public const string CdsAuthorityUri = "https://login.windows.net/common/oauth2/authorize";
-
-        // azure (optionally could work with azure easy-tables)
-        public const string AzureMobileAppEndpoint = "http://<INSERT YOUR EASY TABLES>/";
         
         // Maps
         public const string BingMapsAPIKey = "pQUKHgYH426DqgbLZtlq~BQ3H10m5gxwUsYa4qiw18Q~ArXhd2-QP9UR2WHV8EdNkmFIEn6VEGb0m-_EOvJOmKzkL14lcoEdVef_fS9Jc6gb";
