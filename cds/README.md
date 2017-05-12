@@ -27,6 +27,7 @@ Once the data model has been loaded, then data is most easily reviewed and edite
 
 Key documentation:
 - [Understand entities in the Common Data Service](https://powerapps.microsoft.com/en-us/tutorials/data-platform-intro/)
+- [Create a custom entity](https://powerapps.microsoft.com/en-us/tutorials/data-platform-create-entity/)
 - [Open entity data in Excel](https://powerapps.microsoft.com/en-us/tutorials/data-platform-interactive-excel/)
 
 # AAD required permissions for Common Data Service apps
