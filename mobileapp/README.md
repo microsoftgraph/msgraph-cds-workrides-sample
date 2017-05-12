@@ -50,7 +50,7 @@ As of 06/05/2017, WorkRides features 88.6% code share (11% iOS / 11.2% Android /
 - **Download** or clone the repository.
 - **Rebuild** the WorkRides.sln solution to get all necessary **NuGet** packages.
 
-This app will run as is with the preconfigured settings so that you can try and learn how it works. You can use alexa@fabrikamco.onmicrosoft.com (password:Build2017) to run the app as soon as you build to see how it works with sample data.
+This app will run as is with the preconfigured settings so that you can try and learn how it works. You can use alexa@fabrikamco.onmicrosoft.com (pass: Microsoft) to run the app as soon as you build to see how it works with sample data.
 
 If you want to plug your tenant data you need to edit **AppSettings.cs** file which is part of the Portable Class Library to update the settings with the values specific to your environment.
 
