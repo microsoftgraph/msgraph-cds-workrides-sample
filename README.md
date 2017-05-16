@@ -33,7 +33,7 @@ Please follow through the links provided below to learn how the individual piece
 - [Mobile App](./mobileapp/README.md) - Xamarin Forms apps that uses Microsoft Graph APIs to get people data and stores in Common Data Service via Web API.
 
 ### Enterprise power users - leverage data and extend a solution using no code
-- [CDS](./CDS/README.md) - The Common Data Service is used as the data repository for the Mobile App and that data is further leveraged by PowerApps, Flow, and PowerBI.
+- [CDS](./cds/README.md) - The Common Data Service is used as the data repository for the Mobile App and that data is further leveraged by PowerApps, Flow, and PowerBI.
 - [PowerApps App](./powerapps/README.md) - PowerApps app built by an enterprise power user who uses Excel like expression language to build a LOB mobile app with out knowing to write code.
 - [Flow](./flow/README.md) - Expense approval workflow built by an enterprise power user that uses Microsoft Flow which sends approval emails to the manager and other departments.
 - [PowerBI dashboard](./powerbi/README.md) - A dashboard built by an enterprise power user that helps analysing the ride share data.

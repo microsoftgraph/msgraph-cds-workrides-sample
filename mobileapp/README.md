@@ -291,7 +291,7 @@ private async Task<IEnumerable<T>> GetAllRecordsAsync<T>(string api)
 }
 ```
 
-For more details about CDS, consult the [separate readme document for CDS](../CDS/README.md). 
+For more details about CDS, consult the [separate readme document for CDS](../cds/README.md). 
 
 Key documentation:
 - [Get started with the Common Data Service SDK](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-get-started)
