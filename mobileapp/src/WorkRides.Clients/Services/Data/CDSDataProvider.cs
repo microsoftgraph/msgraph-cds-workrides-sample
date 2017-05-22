@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarPool.Clients.Core.Models;
-
-using Microsoft.OData.Client;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using Xamarin.Forms;
+using CarPool.Clients.Core.Helpers;
 
 namespace CarPool.Clients.Core.Services.Data
 {
     public class CDSDataProvider : IDataService
     {
-        public async Task InitializeAsync(string token = "")
-        {
-            // Does nothing
-            await Task.Delay(0);
-        }
+        
 
         // Local host 
         private const string localServiceApiUri = "http://localhost:9689/api";
@@ -38,55 +33,38 @@ namespace CarPool.Clients.Core.Services.Data
         private const string DriverAPI = "/Driver";
 
 
-        public CDSDataProvider(bool hitLocalService = false)
+        public CDSDataProvider()
         {
-            serviceApiUri = hitLocalService ? localServiceApiUri : azureServiceApiUri;
+            serviceApiUri = AppSettings.HitLocalService ? localServiceApiUri : azureServiceApiUri;
         }
-
-        public CDSDataProvider(IPlatformParameters _platformParameters, bool hitLocalService = false) : this(hitLocalService)
+        
+        public async Task InitializeAsync(string token = "")
         {
-            platformParameters = _platformParameters;
-        }        
-
-        private IPlatformParameters platformParameters;
-
-        private static AuthenticationHeaderValue authHeader;
-        private AuthenticationHeaderValue AuthHeader
-        {
-            get
+            if (string.IsNullOrEmpty(token))
             {
-                if (authHeader == null)
-                {
-                    var authResult = AccessToken();
-                    var authHeaderString = authResult.CreateAuthorizationHeader();
-                    var authorizationSchemeAndParameter = authHeaderString.Split(' ');
-                    authHeader = new AuthenticationHeaderValue(authorizationSchemeAndParameter[0], authorizationSchemeAndParameter[1]);
-                }
-                return authHeader;
+                var authHeaderString = (await AccessToken())?.CreateAuthorizationHeader();
+                var authorizationSchemeAndParameter = authHeaderString.Split(' ');
+                authHeader = new AuthenticationHeaderValue(authorizationSchemeAndParameter[0], authorizationSchemeAndParameter[1]);
+            }
+            else
+            {
+                authHeader = new AuthenticationHeaderValue("Bearer", token); ;
             }
         }
 
-        
-        private AuthenticationResult AccessToken()
+        private IPlatformParameters platformParameters;
+
+        private AuthenticationHeaderValue authHeader;
+
+        private Task<AuthenticationResult> AccessToken()
         {
-            string resourceUri = "https://fabrikamco.onmicrosoft.com/c6e243df-7fa8-454c-8fc4-0089dc7574e2";
-            string clientId = "adfdd950-ecd3-4b3e-9257-57acbcb3fcdf"; //Point to app that has permissions to the functions app
-            string redirectUri = "http://localhost/";
+            Task<AuthenticationResult> result = DependencyService.Get<IAuthenticator>()
+                    .Authenticate(AppSettings.CdsAuthorityUri,
+                        AppSettings.CdsResourceUri,
+                        AppSettings.CarpoolClientId,
+                        AppSettings.CdsRedirectUri);
 
-
-
-            // Create an instance of AuthenticationContext to acquire an Azure access token  
-            // OAuth2 authority Uri  
-            string authorityUri = "https://login.windows.net/common/oauth2/authorize";
-            AuthenticationContext authContext = new AuthenticationContext(authorityUri);
-
-            // Call AcquireToken to get an Azure token from Azure Active Directory token issuance endpoint  
-            //  AcquireToken takes a Client Id that Azure AD creates when you register your client app.  
-            AuthenticationResult result = authContext.AcquireTokenAsync(resourceUri,
-                                                    clientId,
-                                                    new Uri(redirectUri),
-                                                    this.platformParameters).Result;
-            return result;           
+            return result;
         }
 
         public async Task<IEnumerable<Driver>> GetAllDriversAsync()
@@ -108,7 +86,7 @@ namespace CarPool.Clients.Core.Services.Data
         {
             //Prepare to make HTTP request
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+            client.DefaultRequestHeaders.Authorization = this.authHeader;
 
             //Build URI string with web API as the base and the specific API added as a suffix
             var uriString = serviceApiUri + api;
@@ -143,7 +121,7 @@ namespace CarPool.Clients.Core.Services.Data
         private async Task<T> GetRecordAsync<T>(string api, string itemId)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+            client.DefaultRequestHeaders.Authorization = this.authHeader;
             var uriString = serviceApiUri + api + "/" + itemId;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
             HttpResponseMessage response = await client.GetAsync(uriString);
@@ -189,7 +167,7 @@ namespace CarPool.Clients.Core.Services.Data
         private async Task InsertRecord<T>(T item, string api)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+            client.DefaultRequestHeaders.Authorization = this.authHeader;
             var updateUriString = serviceApiUri + api;
             var requestString = JsonConvert.SerializeObject(item);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
@@ -221,7 +199,7 @@ namespace CarPool.Clients.Core.Services.Data
             else
             {
                 var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+                client.DefaultRequestHeaders.Authorization = this.authHeader;
                 var updateUriString = serviceApiUri + api + "/" + itemId;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
                 var requestString = JsonConvert.SerializeObject(item);
@@ -265,7 +243,7 @@ namespace CarPool.Clients.Core.Services.Data
         private async Task DeleteRecord(string api, string itemId)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+            client.DefaultRequestHeaders.Authorization = this.authHeader;
             var updateUriString = serviceApiUri + api + "/" + itemId;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
             HttpResponseMessage response = await client.DeleteAsync(updateUriString);

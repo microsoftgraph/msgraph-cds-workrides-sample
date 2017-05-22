@@ -17,14 +17,16 @@ namespace CarPool.Clients
         public const string GraphAuthorityUri = "https://login.windows.net/fabrikamco.onmicrosoft.com";
 
         // CDS
-        public const string CdsResourceUri = "http://rts.powerapps.com";
+        public const string CdsResourceUri = "https://fabrikamco.onmicrosoft.com/c6e243df-7fa8-454c-8fc4-0089dc7574e2";
         //A redirect uri gives AAD more details about the specific application that it will authenticate.  
         //Since a client app does not have an external service to redirect to, this Uri is the standard placeholder for a client app.  
         public const string CdsRedirectUri = "http://workRides";
         // Create an instance of AuthenticationContext to acquire an Azure access token  
         // OAuth2 authority Uri  
         public const string CdsAuthorityUri = "https://login.windows.net/common/oauth2/authorize";
-        
+
+        public const bool HitLocalService = false;
+
         // Maps
         public const string BingMapsAPIKey = "pQUKHgYH426DqgbLZtlq~BQ3H10m5gxwUsYa4qiw18Q~ArXhd2-QP9UR2WHV8EdNkmFIEn6VEGb0m-_EOvJOmKzkL14lcoEdVef_fS9Jc6gb";
         public const string GoogleMapsAPIKey = "AIzaSyBoQAHK-txnbmD8zjebtVdg6St0GrPciUY";
