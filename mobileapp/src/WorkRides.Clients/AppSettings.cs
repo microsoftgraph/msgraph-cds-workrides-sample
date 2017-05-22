@@ -25,7 +25,7 @@ namespace CarPool.Clients
         // OAuth2 authority Uri  
         public const string CdsAuthorityUri = "https://login.windows.net/common/oauth2/authorize";
 
-        public const bool HitLocalService = true;
+        public const bool HitLocalService = false;
 
         // Maps
         public const string BingMapsAPIKey = "<INSERT YOUR BING KEY>";
