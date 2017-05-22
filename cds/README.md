@@ -44,16 +44,11 @@ Detailed information about application registration for an app that will interac
 # From the Xamarin App to Common Data Service
 The Xamarin app connects to the customer's Common Data Service environment to access data about employees and store driver and ride details data.  From the Xamarin app, we used the CDS SDK to interact with CDS. 
 
-Documentation for the CDS SDK can be found at [Building apps with the Common Data Service](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-home-page). Unfortunately the CDS SDK is currently not PCL compatible so it can't be called directly from a Xamarin app, so the CDS SDK code should be wrapped by a web API or a series of Azure Functions. In the future, we'll be working on a way to access CDS data from a Xamarin app in a single step.  
-In the sample, a web API has been built. The interaction with CDS from the Xamarin App is therefore:
-*Xamarin App* > *Web API* > *CDS SDK* > *CDS*
-
-The Web API can be seen in the *CarPool.WebApp* project. An example of the SDK code in the web API can be seen in the *CarPool.WebApp.Controllers.EmployeeController* class.
-
-The code that calls the Web API can be seen in the *CarPool.Clients.Core* project. Specifically the *CarPool.Clients.Core.Services.Data.CDSDataProvider* class contains all the Web API interaction code.
+For details about how the Xamarin App called CDS, consult the [separate readme document for the Mobile App](../mobileapp/README.md). 
 
 Key documentation:
 - [Get started with the Common Data Service SDK](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-get-started)
+- [Building apps with the Common Data Service](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-home-page)
 - [Get started with the Common Data Service SDK via Azure Functions](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-azure-functions-get-started)
 
 # From PowerApps to Common Data Service

@@ -123,14 +123,7 @@
     <Compile Include="Models\RootGraphObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Data\AzureMobileAppService.cs" />
-    <Compile Include="Services\Data\CDSODataProvider.cs" />
     <Compile Include="Services\Data\CDSDataProvider.cs" />
-    <Compile Include="Services\Data\CDSProxy.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CDSProxy.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Services\Data\ODataEntryExtensions.cs" />
     <Compile Include="Services\GeoCoder\GoogleGeoCoder.cs" />
     <Compile Include="Services\GeoCoder\IGeoCoder.cs" />
     <Compile Include="Services\GeoCoder\XamarinGeoCoder.cs" />
@@ -518,7 +511,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Services\Data\CDSProxy.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\UserPreferencesView.xaml">
@@ -615,12 +607,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Services\Data\CDSProxy.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CDSProxy.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

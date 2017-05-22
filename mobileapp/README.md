@@ -207,6 +207,96 @@ var result = await GraphClient.Instance.Beta.Users.Request()
                 .GetAsync();
 ```
 
+### Calling Microsoft Common Data Service
+The Xamarin app connects to the customer's Common Data Service environment to access data about employees and store driver and ride details data.  From the Xamarin app, we used the CDS SDK to interact with CDS. 
+
+Documentation for the CDS SDK can be found at [Building apps with the Common Data Service](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-home-page). Unfortunately the CDS SDK is currently not PCL compatible so it can't be called directly from a Xamarin app, so the CDS SDK code should be wrapped by a web API or a series of Azure Functions. In the future, we'll be working on a way to access CDS data from a Xamarin app in a single step.  
+In the sample, a web API has been built. The interaction with CDS from the Xamarin App is therefore:
+*Xamarin App* > *Web API* > *CDS SDK* > *CDS*
+
+The Web API can be seen in the *CarPool.WebApp* project. An example of the SDK code in the web API can be seen in the *CarPool.WebApp.Controllers.EmployeeController* class.
+
+A good example of the calls to the CDS SDK can be seen in the *Get* method:
+```csharp
+public async Task<IEnumerable<Employee>> Get()
+{
+    //Get CDS SDK reference ready to communicate with CDS environment
+    using (Client client = await CdsHelper.CreateClientAsync(this.Request))
+    {
+        //Build query
+        DataRangeSkipClauseBuilder<CarPool.Web.Library.Employee> query = client.GetRelationalEntitySet<CarPool.Web.Library.Employee>()
+                    .CreateQueryBuilder()
+                    .Project(pc => pc
+                                    .SelectField(f => f.PrimaryId)
+                                    .SelectField(f => f.FullName)
+                                    .SelectField(f => f.HomeAddress)
+                                    .SelectField(f => f.WorkAddress)
+                                    .SelectField(f => f.PreferredArrivalTimeAtWork)
+                                    .SelectField(f => f.PreferredDepartureTimeFromWork)
+                                    .SelectField(f => f.Email)
+                                    .SelectField(f => f.Phone)
+                                    .SelectField(f => f.BusinessUnit)
+                                    .SelectField(f => f.HomeLatitude)
+                                    .SelectField(f => f.HomeLongitude)
+                                    .SelectField(f => f.WorkLatitude)
+                                    .SelectField(f => f.WorkLongitude)
+                                );
+
+        //Execute query
+        OperationResult<IReadOnlyList<CarPool.Web.Library.Employee>> queryResult = null;
+        await client.CreateRelationalBatchExecuter(RelationalBatchExecutionMode.Transactional)
+            .Query(query, out queryResult)
+            .ExecuteAsync();
+
+        //Transform query results
+        var employees = new List<Employee>();
+        foreach (var entry in queryResult.Result)
+        {
+            employees.Add(CDSEmployeeToAppEmployee(entry));
+        }
+        return employees;
+    }
+}
+```
+
+The code that calls the Web API can be seen in the *CarPool.Clients.Core* project. Specifically the *CarPool.Clients.Core.Services.Data.CDSDataProvider* class contains all the Web API interaction code.
+
+A good example of the calls to the Web API can be seen in the *GetAllEmployeesAsync* and *GetAllRecordsAsync* methods:
+
+```csharp
+public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
+{
+    return await GetAllRecordsAsync<Employee>(EmployeeAPI);
+}
+
+private async Task<IEnumerable<T>> GetAllRecordsAsync<T>(string api)
+{
+    //Prepare to make HTTP request
+    var client = new HttpClient();
+    client.DefaultRequestHeaders.Authorization = this.AuthHeader;
+
+    //Build URI string with web API as the base and the specific API added as a suffix
+    var uriString = serviceApiUri + api;
+
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
+
+    //Make GET request and capture response
+    HttpResponseMessage response = await client.GetAsync(uriString);
+    var responseString = await response.Content.ReadAsStringAsync();
+
+    //Transform JSON response into array of data model objects
+    var results = JsonConvert.DeserializeObject<T[]>(responseString);
+
+    return results;
+}
+```
+
+For more details about CDS, consult the [separate readme document for CDS](../cds/README.md). 
+
+Key documentation:
+- [Get started with the Common Data Service SDK](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-get-started)
+- [Building apps with the Common Data Service](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-home-page)
+- [Get started with the Common Data Service SDK via Azure Functions](https://docs.microsoft.com/en-us/common-data-service/entity-reference/cds-sdk-azure-functions-get-started)
 
 ### Maps services
 The WorkRides app use Maps services to calculate and display the user routes and also to geocode the user home/work address to geopositions.

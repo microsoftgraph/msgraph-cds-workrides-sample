@@ -84,16 +84,21 @@ namespace CarPool.Clients.Core.Services.Data
 
         private async Task<IEnumerable<T>> GetAllRecordsAsync<T>(string api)
         {
+            //Prepare to make HTTP request
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = this.authHeader;
+
+            //Build URI string with web API as the base and the specific API added as a suffix
             var uriString = serviceApiUri + api;
+
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
+
+            //Make GET request and capture response
             HttpResponseMessage response = await client.GetAsync(uriString);
             var responseString = await response.Content.ReadAsStringAsync();
-            var results = JsonConvert.DeserializeObject<T[]>(responseString);
 
-            //Debug
-            //throw new Exception("uriString= '" + uriString + "' responseString= '" + responseString.ToString() + "'");
+            //Transform JSON response into array of data model objects
+            var results = JsonConvert.DeserializeObject<T[]>(responseString);
 
             return results;
         }
@@ -167,9 +172,6 @@ namespace CarPool.Clients.Core.Services.Data
             var requestString = JsonConvert.SerializeObject(item);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJSON));
             HttpResponseMessage response = await client.PostAsync(updateUriString, new StringContent(requestString, Encoding.UTF8, ApplicationJSON));
-
-            //Debug
-            //throw new Exception("requestString= '" + requestString + "' response= '" + response.ToString() + "'");
         }
 
         public async Task InsertOrUpdateDriverAsync(Driver item)
