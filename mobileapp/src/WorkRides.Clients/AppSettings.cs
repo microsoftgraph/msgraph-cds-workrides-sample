@@ -24,7 +24,9 @@ namespace CarPool.Clients
         // Create an instance of AuthenticationContext to acquire an Azure access token  
         // OAuth2 authority Uri  
         public const string CdsAuthorityUri = "https://login.windows.net/common/oauth2/authorize";
-        
+
+        public const bool HitLocalService = true;
+
         // Maps
         public const string BingMapsAPIKey = "<INSERT YOUR BING KEY>";
         public const string GoogleMapsAPIKey = "<INSERT YOUR GMAPS KEY>";
