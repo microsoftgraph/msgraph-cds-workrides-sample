@@ -17,7 +17,7 @@ namespace CarPool.Clients
         public const string GraphAuthorityUri = "https://login.windows.net/fabrikamco.onmicrosoft.com";
 
         // CDS
-        public const string CdsResourceUri = "http://rts.powerapps.com";
+        public const string CdsResourceUri = "https://fabrikamco.onmicrosoft.com/c6e243df-7fa8-454c-8fc4-0089dc7574e2";
         //A redirect uri gives AAD more details about the specific application that it will authenticate.  
         //Since a client app does not have an external service to redirect to, this Uri is the standard placeholder for a client app.  
         public const string CdsRedirectUri = "http://workRides";
