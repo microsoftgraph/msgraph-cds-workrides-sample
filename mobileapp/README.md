@@ -69,10 +69,10 @@ One of the core features of this app is work based authentication. To enable thi
 1. Choose your Azure AD tenant by selecting your account in the top right corner of the page.
 1. In the left-hand navigation pane, choose More Services, click **App Registrations**, and click **Add**.
 1. Create a **new registrations** application with your preferred name. For native applications usually the redirect uri is configured to http://localhost.
-![](media\registe.png)
+![](https://github.com/nicolesigei/msgraph-cds-workrides-sample/blob/master/media/register.png)
 
 1. When the app has been created, an unique id called **Application ID** (e.g. c8c39d80-e4ad-4e07-86af-de46afcf4b56) is assigned. This ID will be used subsequently to uniquely identify the app registration by the client app and also the Microsoft authorization endpint to facilitate sign-in process.
-![](media/client.png)
+![](https://github.com/nicolesigei/msgraph-cds-workrides-sample/blob/master/media/client.png)
 1. In order for us to use Microsoft Graph API and CDS necessary permissions need to be added to the application object to access **Microsoft Graph** API and **Common Data Service** resources.
 
 #### Required permissions for Microsoft Graph
@@ -94,7 +94,7 @@ Since this app needs to access user profile, calendar, email you need to configu
 * Permissions to send emails
   * Send email as a user (**Mail.Send**)
 
-![](media\permissions.png)
+![](https://github.com/nicolesigei/msgraph-cds-workrides-sample/blob/master/media/permissions.png)
 You can learn more about permissions and allowed actions from [Graph API documentation](https://developer.microsoft.com/en-us/graph/docs/authorization/permission_scopes).
 
 #### Required permissions for Common Data Service
