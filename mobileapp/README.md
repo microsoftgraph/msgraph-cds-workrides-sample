@@ -341,7 +341,7 @@ Aditionally to the maps service to display the map and calculate the route, must
 If you see build issues when pulling updates from the repo, try cleaning and rebuilding the solution.
 
 ## Copyright and license
-* Code and documentation copyright 2017 Microsoft Corp. Code released under the [MIT license](https://opensource.org/licenses/MIT).
+* Code and documentation copyright 2019  Microsoft Corp. Code released under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
