@@ -1,5 +1,13 @@
 # WorkRides Mobile App
 
+## Table of Contents.
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [Mobile App (Xamarin Forms App)](#Mobile-App-Xamarin-Forms-App)
+* [Setup](#setup)
+* [App Registration](#App-Registration)
+* [Clean and Rebuild](#Clean-and-Rebuild)
+## Introduction
 The mobile app described here uses [Microsoft Graph](https://graph.microsoft.com/) APIs to get people data and stores in [Common Data Service](https://aka.ms/CommonDataService) via Web API. This mobile app connects people to carpool to work. Users can sign in to the app using their work identities (AAD) and find other employees in their org and/or the people they closely work with to Carpool to work.
 
 This app demonstrates that professional developers are able to build people centric, data rich apps with their platform of choice using [Microsoft Graph](https://graph.microsoft.com/) APIs and [Common Data Service](https://aka.ms/CommonDataService).
@@ -22,7 +30,7 @@ This app demonstrates that professional developers are able to build people cent
 ## Mobile App (Xamarin Forms App)
 This project exercises the following platforms, frameworks or features:
 
-* Xamarin.Forms
+### Xamarin.Forms
   * XAML
   * Bindings
   * Converters
@@ -54,40 +62,39 @@ If you want to plug your tenant data you need to edit **AppSettings.cs** file wh
 
 The following sections will walk you through the steps involved to build this app. You can follow these steps to understand how such an app can be built using Microsoft's tools and technologies. 
 
-### App Registration
+## App Registration
 One of the core features of this app is work based authentication. To enable this, first the app needed to be registered with Azure Active Directory. The registration was easy and done in [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications) after loggin in to our directory. WorkRides is configured as a multi-tenant app. So it can be deployed in many organizations with data isolation. 
 
-* Sign in to the [Azure portal](https://portal.azure.com).
-* Choose your Azure AD tenant by selecting your account in the top right corner of the page.
-* In the left-hand navigation pane, choose More Services, click App Registrations, and click Add.
-* Create a new **Native** application with your preferred name. For native applications usually the redirect uri is configured to http://localhost.
+1. Sign in to the [Azure portal](https://portal.azure.com).
+1. Choose your Azure AD tenant by selecting your account in the top right corner of the page.
+1. In the left-hand navigation pane, choose More Services, click **App Registrations**, and click **Add**.
+1. Create a **new registrations** application with your preferred name. For native applications usually the redirect uri is configured to http://localhost.
+![](https://github.com/nicolesigei/msgraph-cds-workrides-sample/blob/master/media/register.png)
 
-When the app has been created, an unique id called **Application ID** (e.g. c8c39d80-e4ad-4e07-86af-de46afcf4b56) is assigned. This ID will be used subsequently to uniquely identify the app registration by the client app and also the Microsoft authorization endpint to facilitate sign-in process.
-
-In order for us to use Microsoft Graph API and CDS necessary permissions need to be added to the application object to access **Microsoft Graph** API and **Common Data Service** resources.
+1. When the app has been created, an unique id called **Application ID** (e.g. c8c39d80-e4ad-4e07-86af-de46afcf4b56) is assigned. This ID will be used subsequently to uniquely identify the app registration by the client app and also the Microsoft authorization endpint to facilitate sign-in process.
+![](https://github.com/nicolesigei/msgraph-cds-workrides-sample/blob/master/media/client.png)
+1. In order for us to use Microsoft Graph API and CDS necessary permissions need to be added to the application object to access **Microsoft Graph** API and **Common Data Service** resources.
 
 #### Required permissions for Microsoft Graph
 Under the required permissions option add Microsoft Graph.
-
-<img src="../media/add_graph_api.png" Width="500" Height="200" />
-
 Since this app needs to access user profile, calendar, email you need to configure following permissions:
 
 * Permissions to sign in with AAD
-  * Sign users in (*openid*)
-  * Sign in and read user profile (*User.Read*)
+  * Sign users in (**Openid**)
+  * Sign in and read user profile (**User.Read**)
 *  Permissions to read other users from the Azure AD
-  *  Read all users' basic profiles (*User.ReadBasic.All*)
+  *  Read all users' basic profiles (**User.ReadBasic.All**)
 * Permissions to create and read Calendar events
-  * Have full access to user calendars (*Calendars.ReadWrite*)
-  * Read user and shared calendars (*Calendars.Read.Shared*)
+  * Have full access to user calendars (**Calendars.ReadWrite**)
+  * Read user and shared calendars (**Calendars.Read.Shared**)
 * Permissions used to Fetch Out Of Office (OOF)
-  * Read user mailbox settings (*MailboxSettings.Read*)
-  * Read user mail (*Mail.Read*)
-  * Read user and shared mail (*Mail.Read.Shared*)
+  * Read user mailbox settings (**MailboxSettings.Read**)
+  * Read user mail (**Mail.Read**)
+  * Read user and shared mail (**Mail.Read.Shared**)
 * Permissions to send emails
-  * Send email as a user (*Mail.Send*)
+  * Send email as a user (**Mail.Send**)
 
+![](https://github.com/nicolesigei/msgraph-cds-workrides-sample/blob/master/media/permissions.png)
 You can learn more about permissions and allowed actions from [Graph API documentation](https://developer.microsoft.com/en-us/graph/docs/authorization/permission_scopes).
 
 #### Required permissions for Common Data Service
@@ -334,7 +341,7 @@ Aditionally to the maps service to display the map and calculate the route, must
 If you see build issues when pulling updates from the repo, try cleaning and rebuilding the solution.
 
 ## Copyright and license
-* Code and documentation copyright 2017 Microsoft Corp. Code released under the [MIT license](https://opensource.org/licenses/MIT).
+* Code and documentation copyright 2019  Microsoft Corp. Code released under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
