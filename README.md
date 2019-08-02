@@ -1,3 +1,18 @@
+---
+page_type: sample
+products:
+- office-365
+- ms-graph
+languages:
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  services:
+  - Office 365
+  createdDate: 5/8/2017 5:02:44 PM
+---
 
 # Build End-to-End Solutions Using Microsoft Graph and Common Data Service
 
