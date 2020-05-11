@@ -1,20 +1,10 @@
----
-page_type: sample
-products:
-- office-365
-- ms-graph
-languages:
-- csharp
-extensions:
-  contentType: samples 
-  technologies:
-  - Microsoft Graph
-  services:
-  - Office 365
-  createdDate: 5/8/2017 5:02:44 PM
----
+# [ARCHIVED] Build End-to-End Solutions Using Microsoft Graph and Common Data Service
 
-# Build End-to-End Solutions Using Microsoft Graph and Common Data Service
+## IMPORTANT
+
+**This project is being archived. As part of the archival process, we're closing all open issues and pull requests.**
+
+**You can continue to use this sample "as-is", but it won't be maintained moving forward. We apologize for any inconvenience.**
 
 ## Overview
 > **NOTE** This is an end-to-end solution published as part of the Microsoft Build 2017 session [P4136](https://channel9.msdn.com/Events/Build/2017/P4136). This contains multiple projects that use Microsoft Graph and Common Data Service, Xamarin technologies.
